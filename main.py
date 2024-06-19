@@ -41,9 +41,13 @@ def register():
     print("Registrate\n")
     user = input("Ingrese un nombre de usuario: ")
     password = input("Ingrese una contraseña: ")
-    usuarios[user] = {"usuario": user, "contraseña": password, "id": len(usuarios)}
-    print("Usuario registrado exitosamente.")
-
+    if user in usuarios:
+        print("El usuario ya existe.")
+    else:
+        usuarios[user] = {"usuario": user, "contraseña": password}
+        print("Usuario registrado exitosamente.")
+        
+    main_manu()
 
 #Iniciar sesión
 def login():
@@ -51,17 +55,20 @@ def login():
     user = input("Ingrese su nombre de usuario: ")
     password = input("Ingrese su contraseña: ")
     if user in usuarios and usuarios[user]["contraseña"] == password:
-        print(f"Bienvenido, {user}!")
+        os.system("cls")
+        print(f"Hola {user}!")
+        menu_user() 
     else:
         print("Usuario o contraseña incorrectos.")
+        
 
 
 def ver_productos():
     print("Seleccionar: |   Tipo   |\t\t    Nombre    \t\t|\t   Precio  \t |  Stock")
     print("-"*102)
     for k,v in productos.items():
-        print(f"    {v['id']:<4}     | {v['tipo']:<8} | {v['nombre']:<35}   |\t${v['precio']:<10}USD\t |    {v['stock']:<17}\n")
-
+        print(f"    {v['id']:<4}     | {v['tipo']:<8} | {v['nombre']:<35}   |\t${v['precio']:<10}USD\t |    {v['stock']:<17}\n") #Ajustes de impresión para que se vea bonito
+    print("-"*102)
 
 
 
@@ -79,11 +86,14 @@ def menu_admin():
     opcion = input("Ingrese una opción: ")
 
     if opcion == "1":
+        os.system("cls")
         ver_productos()
+        
 
     elif opcion == "2":
-        #agregar_producto()
-        pass
+        agregar_producto()
+        ver_productos()
+
     elif opcion == "3":
         #modificar_producto()
         pass
@@ -94,12 +104,34 @@ def menu_admin():
         main_manu()
 
 
+#Agregar productos
+def agregar_producto():
+    print("Agregar productos\n")
+    nombre = input("Ingrese el nombre del producto: ")
+    precio = float(input("Ingrese el precio del producto: "))
+    stock = int(input("Ingrese el stock del producto: "))
+    tipo = input("Ingrese el tipo de producto: ")
+    id = len(productos) + 1
+    productos[str(id)] = {"id": id, "nombre": nombre, "precio": precio, "stock": stock, "tipo": tipo}
+    print("Producto agregado exitosamente.")
+
+def eliminar_producto():
+    print("Eliminar producto\n")
+    ver_productos()
+    id = input("Ingrese el ID del producto que desea eliminar: ")
+    if id in productos:
+        del productos[id]
+        print("Producto eliminado exitosamente.")
+    else:
+        print("El producto no existe.")
+
 #####################################
 #   #   Funciónes de usuario    #   #
 #####################################
 
 #Menú usuario
 def menu_user():
+    os.system("cls")
     print("Bienvenido/a a MyGamingSetup")
     print("1.- Ver productos disponibles") #Mostrar lista con productos
     print("2.- Comprar producto")          #Seleccionar producto y cantidad
@@ -108,10 +140,13 @@ def menu_user():
     opcion = input("Ingrese una opción: ")
 
     if opcion == "1":
+        os.system("cls")
         ver_productos()
+        menu_user()
 
     elif opcion == "2":
         comprar_producto()
+        menu_user()
 
     elif opcion == "3":
         gestionar_cuenta()
@@ -150,33 +185,57 @@ def gestionar_cuenta():
     print("3.- Volver al menú principal")
     opcion = input("Ingrese una opción: ")
     if opcion == "1":
-        print("Cambiar contraseña")
+        #cambiar_contraseña()
+        pass
     elif opcion == "2":
         pass
     elif opcion == "3":
         menu_user()
 
+def cambiar_contraseña():
+    global user #definimos la variable user como global
+    print("Cambio de contraseña\n")
+    nueva_contraseña = input("Ingrese su nueva contraseña: ")
+    usuarios[user]["contraseña"] = nueva_contraseña
+    print("Contraseña cambiada exitosamente.")
 
 ######################################
 #   #   #   Menu principal   #   #   #
 ######################################
 def main_manu():
     try: #aplicamos el try para evitar errores en el programa
-        print("Bienvenido")
-        print("1.Registrarse-")
+        print("Bienvenido/a a MyGamingSetup\n")
+        print("1.-Registrate")
         print("2.-Iniciar Sesión")
         print("3.-Salir del programa")
         opcion = input("Ingrese una opción: ")
 
         if opcion == "1":
+            os.system("cls")
             register()
         elif opcion == "2":
+            os.system("cls")
             login()
         elif opcion == "3":
-            sys.exit("Gracias por visitarnos, nos vemos pronto!")
+            os.system("cls")
+            sys.exit("""
+                     
+                              .,
+                    .      _,'f----.._
+                    |\ ,-'"/  |     ,'
+                    |,_  ,--.      /
+                    /,-. ,'`.     (_
+                    f  o|  o|__     "`-.    ~   Nos vemos pronto crack!
+                    ,-._.,--'_ `.   _.,-`
+                    `"' ___.,'` j,-'
+                      `-.__.,--'
+                     
+""")
 
     except ValueError: #si el usuario ingresa un valor no valido, se ejecutara el siguiente mensaje
         print("ERROR: porfavor, ingrese una de las opciones en pantalla.")
         time.sleep(2)
         os.system("cls")
         main_manu() #se vuelve a llamar a la funcion para que el usuario pueda ingresar una opcion valida
+
+main_manu() #llamamos a la funcion para que se ejecute el programa

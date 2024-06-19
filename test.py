@@ -11,7 +11,6 @@ import string
 #################################
 #   #   #   variables   #   #   #
 #################################
-
 usuarios = {
     "admin" : {"usuario" : "admin", "contraseña": "admin"},
 }
@@ -27,38 +26,101 @@ productos = {
     "8" : {"id":8,"nombre" : "Placa - Yigabait h312-v",      "precio" : 43.00,     "stock" : 30,   "tipo": "placa"},
 }
 
-
-
 def ver_productos():
     print("Seleccionar: |   Tipo   |\t\t    Nombre    \t\t|\t   Precio  \t |  Stock")
     print("-"*102)
     for k,v in productos.items():
         print(f"    {v['id']:<4}     | {v['tipo']:<8} | {v['nombre']:<35}   |\t${v['precio']:<10}USD\t |    {v['stock']:<17}\n")
+    print("-"*102)
 
-def comprar_producto():
-    producto_comprar = input("\nSeleccione un producto: ")
-    
-    # Validar la existencia del producto
-    if producto_comprar not in productos:
-        print("El producto seleccionado no existe.")
-        return
-    
-    while True:
-        try:
-            cantidad = int(input("Ingrese la cantidad: "))
-            if cantidad <= 0:
-                print("Por favor, ingrese un número mayor a 0.")
-                continue
-            if productos[producto_comprar]["stock"] < cantidad:
-                print("Lo sentimos, no hay suficiente stock del producto seleccionado.")
-            else:
-                productos[producto_comprar]["stock"] -= cantidad
-                print(f"Total a pagar: ${productos[producto_comprar]['precio']*cantidad} USD")
-                break  # Salir del bucle si la compra es exitosa
-        except ValueError:
-            print("Por favor, ingrese un número válido.")
-    
+
+
+
+def agregar_productos():
+    print("Agregar productos\n")
+    nombre = input("Ingrese el nombre del producto: ")
+    precio = float(input("Ingrese el precio del producto: "))
+    stock = int(input("Ingrese el stock del producto: "))
+    tipo = input("Ingrese el tipo de producto: ")
+    id = len(productos) + 1
+    productos[str(id)] = {"id": id, "nombre": nombre, "precio": precio, "stock": stock, "tipo": tipo}
+    print("Producto agregado exitosamente.")
+    ver_productos()
 
 ver_productos()
-comprar_producto()
-ver_productos()
+agregar_productos()
+
+
+
+
+
+
+
+#Registrar usuario
+# def register():
+#     print("Registrate\n")
+#     user = input("Ingrese un nombre de usuario: ")
+#     password = input("Ingrese una contraseña: ")
+#     if user in usuarios:
+#         print("El usuario ya existe.")
+#     else:
+#         usuarios[user] = {"usuario": user, "contraseña": password}
+#         print("Usuario registrado exitosamente.")
+        
+
+
+#Iniciar sesión
+# def login():
+#     print("Iniciar sesión\n")
+#     user = input("Ingrese su nombre de usuario: ")
+#     password = input("Ingrese su contraseña: ")
+#     if user in usuarios and usuarios[user]["contraseña"] == password:
+#         print(f"Bienvenido, {user}!")
+#     else:
+#         print("Usuario o contraseña incorrectos.")
+
+# def cambiar_contraseña(user):
+#     print("Cambio de contraseña\n")
+#     nueva_contraseña = input("Ingrese su nueva contraseña: ")
+#     usuarios[user]["contraseña"] = nueva_contraseña
+#     print("Contraseña cambiada exitosamente.")
+
+
+# register()
+# login()
+# print(usuarios)
+# cambiar_contraseña(user="")
+# print(usuarios)
+
+
+
+
+
+
+# def comprar_producto():
+#     producto_comprar = input("\nSeleccione un producto: ")
+    
+#     # Validar la existencia del producto
+#     if producto_comprar not in productos:
+#         print("El producto seleccionado no existe.")
+#         return
+    
+#     while True:
+#         try:
+#             cantidad = int(input("Ingrese la cantidad: "))
+#             if cantidad <= 0:
+#                 print("Por favor, ingrese un número mayor a 0.")
+#                 continue
+#             if productos[producto_comprar]["stock"] < cantidad:
+#                 print("Lo sentimos, no hay suficiente stock del producto seleccionado.")
+#             else:
+#                 productos[producto_comprar]["stock"] -= cantidad
+#                 print(f"Total a pagar: ${productos[producto_comprar]['precio']*cantidad} USD")
+#                 break  # Salir del bucle si la compra es exitosa
+#         except ValueError:
+#             print("Por favor, ingrese un número válido.")
+    
+
+# ver_productos()
+# comprar_producto()
+# ver_productos()
