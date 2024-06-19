@@ -27,6 +27,9 @@ productos = {
     "8" : {"id":8,  "nombre" : "Placa - Yigabait h312-v",      "precio" : 43.00,     "stock" : 30,   "tipo": "placa"},
 }
 
+historial_compras = []
+
+
 
 #################################
 #   #   #   Funciones   #   #   #
@@ -103,27 +106,28 @@ def menu_user():
     print("3.- Gestionar cuenta")          #Cambiar contraseña, borrar cuenta.
     print("4.- Salir de la cuenta")        #Salir de la cuenta
     opcion = input("Ingrese una opción: ")
+
     if opcion == "1":
         ver_productos()
-        
+
     elif opcion == "2":
-        #comprar_producto()
-        pass
+        comprar_producto()
+
     elif opcion == "3":
-        #gestionar_cuenta()
-        pass
+        gestionar_cuenta()
+
     elif opcion == "4":
         main_manu()
 
-
+#opción 2 : Comprar productos
 def comprar_producto():
     producto_comprar = input("\nSeleccione un producto: ")
-    
+
     # Validamos la existencia del producto
     if producto_comprar not in productos:
         print("El producto seleccionado no existe.")
         return # Salir de la función si el producto no existe en el inventario
-    
+
     while True:
         try:
             cantidad = int(input("Ingrese la cantidad: "))
@@ -138,8 +142,19 @@ def comprar_producto():
                 break  # Salir del bucle si la compra es exitosa
         except ValueError:
             print("Por favor, ingrese un número válido.")
-    
 
+def gestionar_cuenta():
+    print("Gestionar cuenta")
+    print("1.- Cambiar contraseña")
+    print("2.- Borrar cuenta")
+    print("3.- Volver al menú principal")
+    opcion = input("Ingrese una opción: ")
+    if opcion == "1":
+        print("Cambiar contraseña")
+    elif opcion == "2":
+        pass
+    elif opcion == "3":
+        menu_user()
 
 
 ######################################
