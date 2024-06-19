@@ -31,6 +31,7 @@ productos = {
 #################################
 #   #   #   Funciones   #   #   #
 #################################
+        #   Globales    #
 
 #Registrar usuario
 def register():
@@ -46,8 +47,24 @@ def login():
     print("Iniciar sesión\n")
     user = input("Ingrese su nombre de usuario: ")
     password = input("Ingrese su contraseña: ")
+    if user in usuarios and usuarios[user]["contraseña"] == password:
+        print(f"Bienvenido, {user}!")
+    else:
+        print("Usuario o contraseña incorrectos.")
+
+        
+def ver_productos():
+    print("   Tipo   |\t\t    Nombre    \t\t|\t   Precio  \t |  Stock")
+    print("-"*85)
+    for k,v in productos.items():
+        print(f"{v['tipo']:<9} | {v['nombre']:<35} |\t${v['precio']:<10}USD\t |    {v['stock']:<17}")
 
 
+
+
+###########################################
+#   #   Funciónes de administrador    #   #
+###########################################
 #Menú admin
 def menu_admin():
     print("Bienvenido/a al menú de administración")
@@ -59,10 +76,7 @@ def menu_admin():
     opcion = input("Ingrese una opción: ")
 
     if opcion == "1":
-        print("   Tipo   |\t\t    Nombre    \t\t|\t   Precio  \t |  Stock")
-        print("-"*85)
-        for k,v in productos.items():
-            print(f"{v['tipo']:<9} | {v['nombre']:<35} |\t${v['precio']:<10}USD\t |    {v['stock']:<17}")
+        ver_productos()
 
     elif opcion == "2":
         #agregar_producto()
@@ -77,21 +91,54 @@ def menu_admin():
         main_manu()
 
 
+#####################################
+#   #   Funciónes de usuario    #   #
+#####################################
 
 #Menú usuario
 def menu_user():
-    print("Bienvenido")
+    print("Bienvenido/a a MyGamingSetup")
     print("1.- Ver productos disponibles") #Mostrar lista con productos
     print("2.- Comprar producto")          #Seleccionar producto y cantidad
-    print("3.- ")
-    print("4.- Salir de la cuenta")
+    print("3.- Gestionar cuenta")          #Cambiar contraseña, borrar cuenta.
+    print("4.- Salir de la cuenta")        #Salir de la cuenta
     opcion = input("Ingrese una opción: ")
     if opcion == "1":
-        #ver_productos()
+        ver_productos()
+        
+    elif opcion == "2":
+        #comprar_producto()
         pass
+    elif opcion == "3":
+        #gestionar_cuenta()
+        pass
+    elif opcion == "4":
+        main_manu()
 
 
-
+def comprar_producto():
+    producto_comprar = input("\nSeleccione un producto: ")
+    
+    # Validamos la existencia del producto
+    if producto_comprar not in productos:
+        print("El producto seleccionado no existe.")
+        return # Salir de la función si el producto no existe en el inventario
+    
+    while True:
+        try:
+            cantidad = int(input("Ingrese la cantidad: "))
+            if cantidad <= 0:
+                print("Por favor, ingrese un número mayor a 0.")
+                continue
+            if productos[producto_comprar]["stock"] < cantidad:
+                print("Lo sentimos, no hay suficiente stock del producto seleccionado.")
+            else:
+                productos[producto_comprar]["stock"] -= cantidad
+                print(f"Total a pagar: ${productos[producto_comprar]['precio']*cantidad} USD")
+                break  # Salir del bucle si la compra es exitosa
+        except ValueError:
+            print("Por favor, ingrese un número válido.")
+    
 
 
 
