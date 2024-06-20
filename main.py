@@ -53,6 +53,7 @@ def register():
 
 #Iniciar sesión
 def login():
+    global user #definimos la variable user como global para poder usarla en otras funciones
     print("Iniciar sesión en MyGamingSetup\n")
     user = input("Ingrese su nombre de usuario: ")
     password = input("Ingrese su contraseña: ")
@@ -197,6 +198,7 @@ def comprar_producto():
             print("Por favor, ingrese un número válido.")
 
 def gestionar_cuenta():
+    global user
     print("Gestionar cuenta")
     print("1.- Cambiar contraseña")
     print("2.- Borrar cuenta")
@@ -216,7 +218,7 @@ def gestionar_cuenta():
         menu_user()
 
 def cambiar_contraseña():
-    global user #definimos la variable user como global
+    global user                                         #definimos la variable user como global
     print("Cambio de contraseña\n")
     newpass = input("Ingrese su nueva contraseña: ")
     usuarios[user]["contraseña"] = newpass
