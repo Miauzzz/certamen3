@@ -35,8 +35,6 @@ def ver_productos():
     print("-"*95 + "\n")
 
 
-
-
 def agregar_productos():
     print("Agregar productos\n")
     nombre = input("Ingrese el nombre del producto: ")

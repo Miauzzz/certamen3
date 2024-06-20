@@ -42,12 +42,12 @@ def register():
     password = input("Ingrese una contraseña: ")
     if user in usuarios:
         print("El usuario ya existe.\n")
-        os.system("pause")
+        time.sleep(1.5)
         os.system("cls")
     else:
         usuarios[user] = {"usuario": user, "contraseña": password}
         print("\nUsuario registrado exitosamente.\n")
-        os.system("pause")
+        time.sleep(1.5)
         os.system("cls")
     main_manu()
 
@@ -67,7 +67,7 @@ def login():
         menu_user()
     else:
         print("\nUsuario o contraseña incorrectos.")
-        time.sleep(1)
+        time.sleep(1.5)
         os.system("cls")
         main_manu()
 
@@ -125,7 +125,7 @@ def agregar_producto():
     id = len(productos) + 1                                                                      # ID único y autoincremental (longitud del diccionario + 1) 
     productos[id] = {"id": id, "nombre": nombre, "precio": precio, "stock": stock, "tipo": tipo} # Agregar producto al diccionario
     print("Producto agregado exitosamente.")
-    os.system("pause") 
+    time.sleep(2) 
     os.system("cls")
 
 def eliminar_producto():
@@ -135,7 +135,7 @@ def eliminar_producto():
     if id in productos:
         del productos[id]
         print("Producto eliminado exitosamente.")
-        os.system("pause")
+        time.sleep(1.5)
         os.system("cls")
         menu_admin()
     else:
@@ -197,18 +197,20 @@ def comprar_producto():
             print("Por favor, ingrese un número válido.")
 
 def gestionar_cuenta():
-    global user #definimos la variable user como global
     print("Gestionar cuenta")
     print("1.- Cambiar contraseña")
     print("2.- Borrar cuenta")
     print("3.- Volver al menú principal")
     opcion = input("Ingrese una opción: ")
     if opcion == "1":
-        #cambiar_contraseña()
-        pass
+        cambiar_contraseña()
+
     elif opcion == "2": #borrar cuenta del usuario en sesion iniciada
         del usuarios[user]
         print("Cuenta eliminada exitosamente.")
+        time.sleep(2)
+        os.system("cls")
+        main_manu()
 
     elif opcion == "3":
         menu_user()
@@ -216,9 +218,12 @@ def gestionar_cuenta():
 def cambiar_contraseña():
     global user #definimos la variable user como global
     print("Cambio de contraseña\n")
-    nueva_contraseña = input("Ingrese su nueva contraseña: ")
-    usuarios[user]["contraseña"] = nueva_contraseña
+    newpass = input("Ingrese su nueva contraseña: ")
+    usuarios[user]["contraseña"] = newpass
     print("Contraseña cambiada exitosamente.")
+    os.system("pause")
+    os.system("cls")
+    menu_user()
 
 ######################################
 #   #   #   Menu principal   #   #   #
