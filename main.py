@@ -66,7 +66,10 @@ def login():
         print(f"Hola {user}!")
         menu_user()
     else:
-        print("Usuario o contraseña incorrectos.")
+        print("\nUsuario o contraseña incorrectos.")
+        time.sleep(1)
+        os.system("cls")
+        main_manu()
 
 #Ver productos disponibles
 def ver_productos():
@@ -157,7 +160,6 @@ def menu_user():
         menu_user()
 
     elif opcion == "2":
-        os.system("cls")
         comprar_producto()
         menu_user()
 
@@ -170,7 +172,7 @@ def menu_user():
 
 #opción 2 : Comprar productos
 def comprar_producto():
-    producto_comprar = input("\nSeleccione un producto: ")
+    producto_comprar = input("\nSeleccione ID del producto: ")
 
     # Validamos la existencia del producto
     if producto_comprar not in productos:
@@ -182,7 +184,7 @@ def comprar_producto():
             cantidad = int(input("Ingrese la cantidad: "))
             if cantidad <= 0:
                 print("Por favor, ingrese un número mayor a 0.")
-                continue
+                continue    # Vuelve al inicio del bucle while
             if productos[producto_comprar]["stock"] < cantidad:
                 print("Lo sentimos, no hay suficiente stock del producto seleccionado.\n")
             else:
@@ -195,6 +197,7 @@ def comprar_producto():
             print("Por favor, ingrese un número válido.")
 
 def gestionar_cuenta():
+    global user #definimos la variable user como global
     print("Gestionar cuenta")
     print("1.- Cambiar contraseña")
     print("2.- Borrar cuenta")
@@ -203,8 +206,10 @@ def gestionar_cuenta():
     if opcion == "1":
         #cambiar_contraseña()
         pass
-    elif opcion == "2":
-        pass
+    elif opcion == "2": #borrar cuenta del usuario en sesion iniciada
+        del usuarios[user]
+        print("Cuenta eliminada exitosamente.")
+
     elif opcion == "3":
         menu_user()
 
