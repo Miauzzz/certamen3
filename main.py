@@ -6,7 +6,6 @@ import os
 import sys
 import time
 import datetime
-import string
 
 #################################
 #   #   #   variables   #   #   #
@@ -38,37 +37,45 @@ historial_compras = []
 
 #Registrar usuario
 def register():
-    print("Registrate\n")
+    print("Registrarse en MyGamingSetup\n")
     user = input("Ingrese un nombre de usuario: ")
     password = input("Ingrese una contraseña: ")
     if user in usuarios:
-        print("El usuario ya existe.")
+        print("El usuario ya existe.\n")
+        os.system("pause")
+        os.system("cls")
     else:
         usuarios[user] = {"usuario": user, "contraseña": password}
-        print("Usuario registrado exitosamente.")
-        
+        print("\nUsuario registrado exitosamente.\n")
+        os.system("pause")
+        os.system("cls")
     main_manu()
 
 #Iniciar sesión
 def login():
-    print("Iniciar sesión\n")
+    print("Iniciar sesión en MyGamingSetup\n")
     user = input("Ingrese su nombre de usuario: ")
     password = input("Ingrese su contraseña: ")
-    if user in usuarios and usuarios[user]["contraseña"] == password:
+
+    if user == "admin" and password == "admin":
+        os.system("cls")
+        menu_admin()
+            
+    elif user in usuarios and usuarios[user]["contraseña"] == password:
         os.system("cls")
         print(f"Hola {user}!")
-        menu_user() 
+        menu_user()
     else:
         print("Usuario o contraseña incorrectos.")
-        
 
-
+#Ver productos disponibles
 def ver_productos():
-    print("Seleccionar: |   Tipo   |\t\t    Nombre    \t\t|\t   Precio  \t |  Stock")
-    print("-"*102)
+    print("    ID\t|      Tipo\t  |\t\tNombre\t\t\t|      Precio\t |   Stock")
+    print("-"*95)
     for k,v in productos.items():
-        print(f"    {v['id']:<4}     | {v['tipo']:<8} | {v['nombre']:<35}   |\t${v['precio']:<10}USD\t |    {v['stock']:<17}\n") #Ajustes de impresión para que se vea bonito
-    print("-"*102)
+        print(f"    {v['id']:<4}|  {v['tipo']:<15}| {v['nombre']:<36}|   ${v['precio']:<5} USD\t |    {v['stock']:<17}\n") #Ajustes de impresión para que se vea bonito
+    print("-"*95 + "\n")
+
 
 
 
@@ -88,8 +95,8 @@ def menu_admin():
     if opcion == "1":
         os.system("cls")
         ver_productos()
+        menu_admin()
         
-
     elif opcion == "2":
         agregar_producto()
         ver_productos()
@@ -101,6 +108,7 @@ def menu_admin():
         #eliminar_producto()
         pass
     elif opcion == "5":
+        os.system("cls")
         main_manu()
 
 
@@ -111,9 +119,11 @@ def agregar_producto():
     precio = float(input("Ingrese el precio del producto: "))
     stock = int(input("Ingrese el stock del producto: "))
     tipo = input("Ingrese el tipo de producto: ")
-    id = len(productos) + 1
-    productos[str(id)] = {"id": id, "nombre": nombre, "precio": precio, "stock": stock, "tipo": tipo}
+    id = len(productos) + 1                                                                      # ID único y autoincremental (longitud del diccionario + 1) 
+    productos[id] = {"id": id, "nombre": nombre, "precio": precio, "stock": stock, "tipo": tipo} # Agregar producto al diccionario
     print("Producto agregado exitosamente.")
+    os.system("pause") 
+    os.system("cls")
 
 def eliminar_producto():
     print("Eliminar producto\n")
@@ -122,6 +132,9 @@ def eliminar_producto():
     if id in productos:
         del productos[id]
         print("Producto eliminado exitosamente.")
+        os.system("pause")
+        os.system("cls")
+        menu_admin()
     else:
         print("El producto no existe.")
 
@@ -131,8 +144,7 @@ def eliminar_producto():
 
 #Menú usuario
 def menu_user():
-    os.system("cls")
-    print("Bienvenido/a a MyGamingSetup")
+    print("Bienvenido/a a MyGamingSetup\n")
     print("1.- Ver productos disponibles") #Mostrar lista con productos
     print("2.- Comprar producto")          #Seleccionar producto y cantidad
     print("3.- Gestionar cuenta")          #Cambiar contraseña, borrar cuenta.
@@ -145,10 +157,12 @@ def menu_user():
         menu_user()
 
     elif opcion == "2":
+        os.system("cls")
         comprar_producto()
         menu_user()
 
     elif opcion == "3":
+        os.system("cls")
         gestionar_cuenta()
 
     elif opcion == "4":
@@ -170,10 +184,12 @@ def comprar_producto():
                 print("Por favor, ingrese un número mayor a 0.")
                 continue
             if productos[producto_comprar]["stock"] < cantidad:
-                print("Lo sentimos, no hay suficiente stock del producto seleccionado.")
+                print("Lo sentimos, no hay suficiente stock del producto seleccionado.\n")
             else:
                 productos[producto_comprar]["stock"] -= cantidad
                 print(f"Total a pagar: ${productos[producto_comprar]['precio']*cantidad} USD")
+                os.system("pause")
+                os.system("cls")
                 break  # Salir del bucle si la compra es exitosa
         except ValueError:
             print("Por favor, ingrese un número válido.")
@@ -230,7 +246,8 @@ def main_manu():
                     `"' ___.,'` j,-'
                       `-.__.,--'
                      
-""")
+
+                     """)
 
     except ValueError: #si el usuario ingresa un valor no valido, se ejecutara el siguiente mensaje
         print("ERROR: porfavor, ingrese una de las opciones en pantalla.")
