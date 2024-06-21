@@ -47,7 +47,7 @@ def register():
 
     if user in usuarios:
         print("El usuario ya existe.\n")
-        time.sleep(1.5)
+        time.sleep(1)
         os.system("cls") if os.name == "nt" else os.system("clear")
         register()
 
@@ -93,7 +93,7 @@ def login():
         menu_user()
     else:
         print("\nUsuario o contraseña incorrectos.")
-        time.sleep(1.5)
+        time.sleep(1)
         os.system("cls") if os.name == "nt" else os.system("clear")
         main_manu()
 
@@ -113,7 +113,6 @@ def ver_historial_compras():
         print(f" {v['user']}  ({v['uid']})   | {v['producto']}     |    {v['precio']}     |     {v['cantidad']}     |   {v['total']}   | {v['fecha']}")
         print("-"*95 + "\n")
     os.system("pause")
-    time.sleep(1.5) #quitar
 
 
 
@@ -125,7 +124,6 @@ def ver_historial_ventas():
         print(f"    {venta['usuario']:<10}|  {venta['producto']:<25}|  ${venta['precio']:<5} USD\t|  {venta['cantidad']:<10}|  ${venta['total']:<10} USD|  {venta['fecha']}")
     print("-"*95 + "\n")
     os.system("pause")
-    time.sleep(1.5) #quitar
 
 
 ###########################################
@@ -173,13 +171,13 @@ def menu_admin():
             main_manu()
         else:
             print("ERROR: porfavor, ingrese una de las opciones en pantalla.")
-            time.sleep(2)
+            time.sleep(1)
             os.system("cls") if os.name == "nt" else os.system("clear")
             menu_admin()
 
     except ValueError:
         print("ERROR: porfavor, ingrese una de las opciones en pantalla.")
-        time.sleep(2)
+        time.sleep(1)
         os.system("cls") if os.name == "nt" else os.system("clear")
         menu_admin()
 
@@ -224,7 +222,7 @@ def agregar_producto():
         
     productos[id] = {"id": id, "nombre": nombre, "precio": precio, "stock": stock, "tipo": tipo} # Agregar producto al diccionario
     print("Producto agregado exitosamente.")
-    time.sleep(2) 
+    time.sleep(1.5) 
     os.system("cls") if os.name == "nt" else os.system("clear")
     menu_admin()
 
@@ -308,12 +306,12 @@ def menu_user():
 
         else:
             print("ERROR: porfavor, ingrese una de las opciones en pantalla.")
-            time.sleep(2)
+            time.sleep(1)
             os.system("cls") if os.name == "nt" else os.system("clear")
             menu_user()
     except ValueError:
         print("ERROR: porfavor, ingrese una de las opciones en pantalla.")
-        time.sleep(2)
+        time.sleep(1)
         os.system("cls") if os.name == "nt" else os.system("clear")
         menu_user()
         
@@ -329,7 +327,7 @@ def comprar_producto():
             return
     except ValueError:
         print("ERROR: porfavor, ingrese una de las opciones en pantalla.")
-        time.sleep(2)
+        time.sleep(1)
         os.system("cls") if os.name == "nt" else os.system("clear")
         return  
 
@@ -356,7 +354,6 @@ def comprar_producto():
                 #agregar al historial de compras
                 hist_ventas[producto_comprar] = {"user": user, "uid": usuarios[user]["uid"], "producto": productos[producto_comprar]["nombre"], "precio": productos[producto_comprar]["precio"], "cantidad": cantidad, "total": productos[producto_comprar]["precio"]*cantidad, "fecha": datetime.datetime.now()}
                 os.system("pause")
-                time.sleep(1.5) #quitar
                 os.system("cls") if os.name == "nt" else os.system("clear")
                 break  # Salir del bucle si la compra es exitosa
         except ValueError:
@@ -378,7 +375,7 @@ def gestionar_cuenta():
         elif opcion == "2": #borrar cuenta del usuario en sesion iniciada
             del usuarios[user]
             print("Cuenta eliminada exitosamente.")
-            time.sleep(2)
+            time.sleep(1.5)
             os.system("cls") if os.name == "nt" else os.system("clear")
             main_manu()
 
@@ -387,7 +384,7 @@ def gestionar_cuenta():
             menu_user()
     except ValueError:
         print("ERROR: porfavor, ingrese una de las opciones en pantalla.")
-        time.sleep(2)
+        time.sleep(1)
         os.system("cls") if os.name == "nt" else os.system("clear")
         gestionar_cuenta()
 
@@ -457,7 +454,7 @@ def main_manu():
                      """)
         else:
             print("ERROR: porfavor, ingrese una de las opciones en pantalla.")
-            time.sleep(2)
+            time.sleep(1)
             os.system("cls") if os.name == "nt" else os.system("clear")
             main_manu() #se vuelve a llamar a la funcion para que el usuario pueda ingresar una opcion valida
 
