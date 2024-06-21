@@ -8,6 +8,8 @@ import os
 import sys
 import time
 import datetime
+from colors import bcolors
+
 
 #################################
 #   #   #   variables   #   #   #
@@ -28,22 +30,23 @@ productos = {
     "7" : {"id":7,  "nombre" : "Gabinete - MSY m315",          "precio" : 45.00,     "stock" : 1,    "tipo": "gabinete"},
     "8" : {"id":8,  "nombre" : "Placa - Yigabait h312-v",      "precio" : 43.00,     "stock" : 30,   "tipo": "placa"},
 }
-#Crear un historial de compras de cada usuario registrado en el sistema utilizando una lista de diccionarios dentro de la lista principal.
+
 hist_compras = {}
 
-#Historial de ventas, debe registrar todas las ventas con usuario, producto, precio, cantidad, total y fecha.
 hist_ventas = {}
 
 #################################
 #   #   #   Funciones   #   #   #
 #################################
-        #   Globales    #
 
 #Registrar usuario
 def register():
     print("Registrarse en MyGamingSetup\n")
-    user = input("Ingrese un nombre de usuario: ")
-    password = input("Ingrese una contraseña: ")
+    print("Para volver al menú principal, escriba 'Q'.")
+    user = input("Ingrese un nombre de usuario: ").lower()
+    if user =="q":
+        os.system("cls") if os.name == "nt" else os.system("clear")
+        main_manu()
 
     if user in usuarios:
         print("El usuario ya existe.\n")
@@ -56,6 +59,11 @@ def register():
         time.sleep(1)
         os.system("cls") if os.name == "nt" else os.system("clear")
         register()
+
+    password = input("Ingrese su contraseña: ")
+    if password == "q" or password == "Q":
+        os.system("cls") if os.name == "nt" else os.system("clear")
+        main_manu()
 
     if password == "":
         print("La contraseña no puede estar vacía.")
@@ -80,8 +88,17 @@ def register():
 def login():
     global user
     print("Iniciar sesión en MyGamingSetup\n")
-    user = input("Ingrese su nombre de usuario: ")
+    print("Para volver al menú principal, escriba 'Q'.")
+    user = input("Ingrese un nombre de usuario: ")
+
+    if user == "q" or user == "Q":
+        os.system("cls") if os.name == "nt" else os.system("clear")
+        main_manu()
+
     password = input("Ingrese su contraseña: ")
+    if password == "q" or password == "Q":
+        os.system("cls") if os.name == "nt" else os.system("clear")
+        main_manu()
 
     if user == "admin" and password == "admin":
         os.system("cls") if os.name == "nt" else os.system("clear")
@@ -95,7 +112,7 @@ def login():
         print("\nUsuario o contraseña incorrectos.")
         time.sleep(1)
         os.system("cls") if os.name == "nt" else os.system("clear")
-        main_manu()
+        login()
 
 #Ver productos disponibles
 def ver_productos():
@@ -105,24 +122,29 @@ def ver_productos():
         print(f"    {v['id']:<4}|  {v['tipo']:<15}| {v['nombre']:<36}|   ${v['precio']:<5} USD\t |    {v['stock']:<17}\n") #Ajustes de impresión para que se vea bonito
     print("-"*95 + "\n")
 
+
 def ver_historial_compras():
-    for k,v in hist_compras.items():
-        print("Historial de compras\n")
-        print("Usuario (id) |      Producto            |    Precio    | Cantidad  |   Total   |  Fecha")
-        print("-"*95)
+    print("Historial de compras\n")
+    print("Usuario (id) |      Producto            |    Precio    | Cantidad  |   Total   |  Fecha")
+    print("-"*95)
+    if len(hist_compras) == 0:
+        print("No hay compras registradas.")
+        print("-"*95 + "\n")
+    for k,v in hist_compras.items():   
         print(f" {v['user']}  ({v['uid']})   | {v['producto']}     |    {v['precio']}     |     {v['cantidad']}     |   {v['total']}   | {v['fecha']}")
         print("-"*95 + "\n")
     os.system("pause")
+    os.system("cls") if os.name == "nt" else os.system("clear")
 
 
 
 def ver_historial_ventas():
     print("Historial de ventas\n")
     print("    Usuario\t|    Producto\t\t\t|    Precio\t|    Cantidad\t|    Total\t|    Fecha")
-    print("-"*95)
+    print("-"*115)
     for venta in hist_ventas:
         print(f"    {venta['usuario']:<10}|  {venta['producto']:<25}|  ${venta['precio']:<5} USD\t|  {venta['cantidad']:<10}|  ${venta['total']:<10} USD|  {venta['fecha']}")
-    print("-"*95 + "\n")
+    print("-"*115 + "\n")
     os.system("pause")
 
 
@@ -176,6 +198,11 @@ def menu_admin():
             menu_admin()
 
     except ValueError:
+        print("ERROR: porfavor, ingrese una de las opciones en pantalla.")
+        time.sleep(1)
+        os.system("cls") if os.name == "nt" else os.system("clear")
+        menu_admin()
+    except KeyboardInterrupt:
         print("ERROR: porfavor, ingrese una de las opciones en pantalla.")
         time.sleep(1)
         os.system("cls") if os.name == "nt" else os.system("clear")
@@ -314,6 +341,11 @@ def menu_user():
         time.sleep(1)
         os.system("cls") if os.name == "nt" else os.system("clear")
         menu_user()
+    except KeyboardInterrupt:
+        print("ERROR: porfavor, ingrese una de las opciones en pantalla.")
+        time.sleep(1)
+        os.system("cls") if os.name == "nt" else os.system("clear")
+        menu_user()       
         
 #opción 2 : Comprar productos
 def comprar_producto():
@@ -329,7 +361,12 @@ def comprar_producto():
         print("ERROR: porfavor, ingrese una de las opciones en pantalla.")
         time.sleep(1)
         os.system("cls") if os.name == "nt" else os.system("clear")
-        return  
+        return
+    except KeyboardInterrupt:
+        print("ERROR: porfavor, ingrese una de las opciones en pantalla.")
+        time.sleep(1)
+        os.system("cls") if os.name == "nt" else os.system("clear")
+        return 
 
     # Validamos la existencia del producto
     if producto_comprar not in productos:
@@ -358,6 +395,10 @@ def comprar_producto():
                 break  # Salir del bucle si la compra es exitosa
         except ValueError:
             print("Por favor, ingrese un número válido.")
+        except KeyboardInterrupt:
+            print("ERROR: porfavor, ingrese una de las opciones en pantalla.")
+            time.sleep(1)
+            os.system("cls") if os.name == "nt" else os.system("clear")
     
 
 def gestionar_cuenta():
@@ -383,6 +424,11 @@ def gestionar_cuenta():
             os.system("cls") if os.name == "nt" else os.system("clear")
             menu_user()
     except ValueError:
+        print("ERROR: porfavor, ingrese una de las opciones en pantalla.")
+        time.sleep(1)
+        os.system("cls") if os.name == "nt" else os.system("clear")
+        gestionar_cuenta()
+    except KeyboardInterrupt:
         print("ERROR: porfavor, ingrese una de las opciones en pantalla.")
         time.sleep(1)
         os.system("cls") if os.name == "nt" else os.system("clear")
@@ -413,7 +459,7 @@ def cambiar_contraseña():
 
     usuarios[user]["contraseña"] = newpass
     print("Contraseña cambiada exitosamente.")
-    os.system("pause")
+    time.sleep(1.5)
     os.system("cls") if os.name == "nt" else os.system("clear")
     menu_user()
 
@@ -424,7 +470,7 @@ def main_manu():
     os.system("cls") if os.name == "nt" else os.system("clear")
     try: #aplicamos el try para evitar errores en el programa
         print("Bienvenido/a a MyGamingSetup")
-        print("*Para poder acceder a nuestro catálogo de productos, porfavor registrese o inicie sesión.\n")
+        print("*Para poder acceder a nuestro catálogo de productos, porfavor registate o inicia sesión.\n")
         print("1.-Registrate")
         print("2.-Iniciar Sesión")
         print("3.-Salir del programa")
@@ -460,9 +506,14 @@ def main_manu():
 
     except ValueError: #si el usuario ingresa un valor no valido, se ejecutara el siguiente mensaje
         print("ERROR: porfavor, ingrese una de las opciones en pantalla.")
-        time.sleep(2)
+        time.sleep(1)
         os.system("cls") if os.name == "nt" else os.system("clear")
         main_manu() #se vuelve a llamar a la funcion para que el usuario pueda ingresar una opcion valida
+    except KeyboardInterrupt:
+        print("\nERROR: porfavor, ingrese una de las opciones en pantalla.")
+        time.sleep(1)
+        os.system("cls") if os.name == "nt" else os.system("clear")
+        main_manu()
 
 os.system("cls") if os.name == "nt" else os.system("clear")
 main_manu() #llamamos a la funcion para que se ejecute el programa
