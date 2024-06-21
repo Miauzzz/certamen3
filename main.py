@@ -1,5 +1,5 @@
 # Certamen 3 - 30%
-#Idea Crear inventario tipo PC factory
+#Idea : crear un sistema de inventario/ventas de productos de computación. 
 
 #librerias
 import os
@@ -40,36 +40,56 @@ def register():
     print("Registrarse en MyGamingSetup\n")
     user = input("Ingrese un nombre de usuario: ")
     password = input("Ingrese una contraseña: ")
+
     if user in usuarios:
         print("El usuario ya existe.\n")
         time.sleep(1.5)
-        os.system("cls")
+        os.system("cls") if os.name == "nt" else os.system("clear")
+
+    elif len(user) < 5:
+        print("El nombre de usuario debe tener mínimo 5 carácteres.")
+        time.sleep(1)
+        os.system("cls") if os.name == "nt" else os.system("clear")
+        register()
+
+    if password == "":
+        print("La contraseña no puede estar vacía.")
+        time.sleep(1)
+        os.system("cls") if os.name == "nt" else os.system("clear")
+        register()
+
+    elif len(password) < 8:
+        print("La contraseña debe tener mínimo 8 carácteres.")
+        time.sleep(1)
+        os.system("cls") if os.name == "nt" else os.system("clear")
+        register()
+
     else:
         usuarios[user] = {"usuario": user, "contraseña": password}
         print("\nUsuario registrado exitosamente.\n")
         time.sleep(1.5)
-        os.system("cls")
+        os.system("cls") if os.name == "nt" else os.system("clear")
     main_manu()
 
 #Iniciar sesión
 def login():
-    global user #definimos la variable user como global para poder usarla en otras funciones
+    global user
     print("Iniciar sesión en MyGamingSetup\n")
     user = input("Ingrese su nombre de usuario: ")
     password = input("Ingrese su contraseña: ")
 
     if user == "admin" and password == "admin":
-        os.system("cls")
+        os.system("cls") if os.name == "nt" else os.system("clear")
         menu_admin()
             
     elif user in usuarios and usuarios[user]["contraseña"] == password:
-        os.system("cls")
-        print(f"Hola {user}!")
+        os.system("cls") if os.name == "nt" else os.system("clear")
+        print(f"Hola, {user}!")
         menu_user()
     else:
         print("\nUsuario o contraseña incorrectos.")
         time.sleep(1.5)
-        os.system("cls")
+        os.system("cls") if os.name == "nt" else os.system("clear")
         main_manu()
 
 #Ver productos disponibles
@@ -88,38 +108,51 @@ def ver_productos():
 ###########################################
 #Menú admin
 def menu_admin():
-    print("Bienvenido/a al menú de administración")
-    print("1.- Ver productos disponibles")
-    print("2.- Agregar producto")
-    print("3.- Modificar producto")
-    print("4.- Eliminar producto")
-    print("5.- Salir de la cuenta")
-    opcion = input("Ingrese una opción: ")
+    try:
+        print("Bienvenido/a al menú de administración")
+        print("1.- Ver productos disponibles")
+        print("2.- Agregar producto")
+        print("3.- Modificar producto")
+        print("4.- Eliminar producto")
+        print("5.- Salir de la cuenta")
+        opcion = input("Ingrese una opción: ")
 
-    if opcion == "1":
-        os.system("cls")
-        ver_productos()
+        if opcion == "1":
+            os.system("cls") if os.name == "nt" else os.system("clear")
+            ver_productos()
+            menu_admin()
+
+        elif opcion == "2":
+            agregar_producto()
+            ver_productos()
+
+        elif opcion == "3":
+            os.system("cls") if os.name == "nt" else os.system("clear")
+            modificar_producto()
+
+        elif opcion == "4":
+            #eliminar_producto()
+            pass
+        elif opcion == "5":
+            os.system("cls") if os.name == "nt" else os.system("clear")
+            main_manu()
+        else:
+            print("ERROR: porfavor, ingrese una de las opciones en pantalla.")
+            time.sleep(2)
+            os.system("cls") if os.name == "nt" else os.system("clear")
+            menu_admin()
+
+    except ValueError:
+        print("ERROR: porfavor, ingrese una de las opciones en pantalla.")
+        time.sleep(2)
+        os.system("cls") if os.name == "nt" else os.system("clear")
         menu_admin()
-        
-    elif opcion == "2":
-        agregar_producto()
-        ver_productos()
-
-    elif opcion == "3":
-        #modificar_producto()
-        pass
-    elif opcion == "4":
-        #eliminar_producto()
-        pass
-    elif opcion == "5":
-        os.system("cls")
-        main_manu()
 
 
 #Agregar productos
 def agregar_producto():
     print("Agregar productos\n")
-    nombre = input("Ingrese el nombre del producto: ")
+    nombre = input("Ingrese el nombre del producto: ")       
     precio = float(input("Ingrese el precio del producto: "))
     stock = int(input("Ingrese el stock del producto: "))
     tipo = input("Ingrese el tipo de producto: ")
@@ -127,7 +160,35 @@ def agregar_producto():
     productos[id] = {"id": id, "nombre": nombre, "precio": precio, "stock": stock, "tipo": tipo} # Agregar producto al diccionario
     print("Producto agregado exitosamente.")
     time.sleep(2) 
-    os.system("cls")
+    os.system("cls") if os.name == "nt" else os.system("clear")
+    menu_admin()
+
+
+def modificar_producto():
+    ver_productos()
+    print("Modificar producto\n")
+    id = input("Ingrese el ID del producto que desea modificar: ")
+    if id in productos:
+        nombre = input("Ingrese el nuevo nombre del producto: ")
+        if nombre == "":
+            nombre = productos[id]["nombre"]
+        precio = float(input("Ingrese el nuevo precio del producto: "))
+        if precio == "":
+            precio = productos[id]["precio"]
+        stock = int(input("Ingrese el nuevo stock del producto: "))
+        if stock == "":
+            stock = productos[id]["stock"]
+        tipo = input("Ingrese el nuevo tipo de producto: ")
+        if tipo == "":
+            tipo = productos[id]["tipo"]
+        productos[id] = {"id": id, "nombre": nombre, "precio": precio, "stock": stock, "tipo": tipo}
+        print("Producto modificado exitosamente.")
+        time.sleep(1.5)
+        os.system("cls") if os.name == "nt" else os.system("clear")
+        menu_admin()
+    else:
+        print("El producto no existe.")
+
 
 def eliminar_producto():
     print("Eliminar producto\n")
@@ -137,7 +198,7 @@ def eliminar_producto():
         del productos[id]
         print("Producto eliminado exitosamente.")
         time.sleep(1.5)
-        os.system("cls")
+        os.system("cls") if os.name == "nt" else os.system("clear")
         menu_admin()
     else:
         print("El producto no existe.")
@@ -148,29 +209,41 @@ def eliminar_producto():
 
 #Menú usuario
 def menu_user():
-    print("Bienvenido/a a MyGamingSetup\n")
-    print("1.- Ver productos disponibles") #Mostrar lista con productos
-    print("2.- Comprar producto")          #Seleccionar producto y cantidad
-    print("3.- Gestionar cuenta")          #Cambiar contraseña, borrar cuenta.
-    print("4.- Salir de la cuenta")        #Salir de la cuenta
-    opcion = input("Ingrese una opción: ")
+    try:
+        print("Bienvenido/a a MyGamingSetup\n")
+        print("1.- Ver productos disponibles") #Mostrar lista con productos
+        print("2.- Comprar producto")          #Seleccionar producto y cantidad
+        print("3.- Gestionar cuenta")          #Cambiar contraseña, borrar cuenta.
+        print("4.- Salir de la cuenta")        #Salir de la cuenta
+        opcion = input("Ingrese una opción: ")
 
-    if opcion == "1":
-        os.system("cls")
-        ver_productos()
+        if opcion == "1":
+            os.system("cls") if os.name == "nt" else os.system("clear")
+            ver_productos()
+            menu_user()
+
+        elif opcion == "2":
+            comprar_producto()
+            menu_user()
+
+        elif opcion == "3":
+            os.system("cls") if os.name == "nt" else os.system("clear")
+            gestionar_cuenta()
+
+        elif opcion == "4":
+            main_manu()
+
+        else:
+            print("ERROR: porfavor, ingrese una de las opciones en pantalla.")
+            time.sleep(2)
+            os.system("cls") if os.name == "nt" else os.system("clear")
+            menu_user()
+    except ValueError:
+        print("ERROR: porfavor, ingrese una de las opciones en pantalla.")
+        time.sleep(2)
+        os.system("cls") if os.name == "nt" else os.system("clear")
         menu_user()
-
-    elif opcion == "2":
-        comprar_producto()
-        menu_user()
-
-    elif opcion == "3":
-        os.system("cls")
-        gestionar_cuenta()
-
-    elif opcion == "4":
-        main_manu()
-
+        
 #opción 2 : Comprar productos
 def comprar_producto():
     producto_comprar = input("\nSeleccione ID del producto: ")
@@ -192,39 +265,64 @@ def comprar_producto():
                 productos[producto_comprar]["stock"] -= cantidad
                 print(f"Total a pagar: ${productos[producto_comprar]['precio']*cantidad} USD")
                 os.system("pause")
-                os.system("cls")
+                os.system("cls") if os.name == "nt" else os.system("clear")
                 break  # Salir del bucle si la compra es exitosa
         except ValueError:
             print("Por favor, ingrese un número válido.")
 
 def gestionar_cuenta():
     global user
-    print("Gestionar cuenta")
-    print("1.- Cambiar contraseña")
-    print("2.- Borrar cuenta")
-    print("3.- Volver al menú principal")
-    opcion = input("Ingrese una opción: ")
-    if opcion == "1":
-        cambiar_contraseña()
+    try:
+        print("Gestionar cuenta")
+        print("1.- Cambiar contraseña")
+        print("2.- Borrar cuenta")
+        print("3.- Volver al menú principal")
+        opcion = input("Ingrese una opción: ")
+        if opcion == "1":
+            cambiar_contraseña()
 
-    elif opcion == "2": #borrar cuenta del usuario en sesion iniciada
-        del usuarios[user]
-        print("Cuenta eliminada exitosamente.")
+        elif opcion == "2": #borrar cuenta del usuario en sesion iniciada
+            del usuarios[user]
+            print("Cuenta eliminada exitosamente.")
+            time.sleep(2)
+            os.system("cls") if os.name == "nt" else os.system("clear")
+            main_manu()
+
+        elif opcion == "3":
+            menu_user()
+    except ValueError:
+        print("ERROR: porfavor, ingrese una de las opciones en pantalla.")
         time.sleep(2)
-        os.system("cls")
-        main_manu()
-
-    elif opcion == "3":
-        menu_user()
+        os.system("cls") if os.name == "nt" else os.system("clear")
+        gestionar_cuenta()
 
 def cambiar_contraseña():
-    global user                                         #definimos la variable user como global
+    global user          
     print("Cambio de contraseña\n")
     newpass = input("Ingrese su nueva contraseña: ")
+    #La contraseña no puede ser igual a la anterior
+    if newpass == usuarios:
+        print("La contraseña no puede ser igual a la anterior.")
+        time.sleep(1)
+        os.system("cls") if os.name == "nt" else os.system("clear")
+        cambiar_contraseña()
+    #La contraseña no puede estar vacía
+    elif newpass == "":
+        print("La contraseña no puede estar vacía.")
+        time.sleep(1)
+        os.system("cls") if os.name == "nt" else os.system("clear")
+        cambiar_contraseña()
+    #la contraseña debe tener mínimo 8 carácteres
+    elif len(newpass) < 8:
+        print("La contraseña debe tener mínimo 8 carácteres.")
+        time.sleep(1)
+        os.system("cls") if os.name == "nt" else os.system("clear")
+        cambiar_contraseña()
+
     usuarios[user]["contraseña"] = newpass
     print("Contraseña cambiada exitosamente.")
     os.system("pause")
-    os.system("cls")
+    os.system("cls") if os.name == "nt" else os.system("clear")
     menu_user()
 
 ######################################
@@ -239,13 +337,13 @@ def main_manu():
         opcion = input("Ingrese una opción: ")
 
         if opcion == "1":
-            os.system("cls")
+            os.system("cls") if os.name == "nt" else os.system("clear")
             register()
         elif opcion == "2":
-            os.system("cls")
+            os.system("cls") if os.name == "nt" else os.system("clear")
             login()
         elif opcion == "3":
-            os.system("cls")
+            os.system("cls") if os.name == "nt" else os.system("clear")
             sys.exit("""
                      
                               .,
@@ -260,11 +358,17 @@ def main_manu():
                      
 
                      """)
+        else:
+            print("ERROR: porfavor, ingrese una de las opciones en pantalla.")
+            time.sleep(2)
+            os.system("cls") if os.name == "nt" else os.system("clear")
+            main_manu() #se vuelve a llamar a la funcion para que el usuario pueda ingresar una opcion valida
 
     except ValueError: #si el usuario ingresa un valor no valido, se ejecutara el siguiente mensaje
         print("ERROR: porfavor, ingrese una de las opciones en pantalla.")
         time.sleep(2)
-        os.system("cls")
+        os.system("cls") if os.name == "nt" else os.system("clear")
         main_manu() #se vuelve a llamar a la funcion para que el usuario pueda ingresar una opcion valida
 
+os.system("cls") if os.name == "nt" else os.system("clear")
 main_manu() #llamamos a la funcion para que se ejecute el programa
