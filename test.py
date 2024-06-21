@@ -1,5 +1,6 @@
 # Certamen 3 - 30%
-#Idea Crear inventario tipo PC factory
+
+#Archivo .py para testear funciones y practicar con listas.
 
 #librerias
 import os
