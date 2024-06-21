@@ -2,7 +2,6 @@
 #Idea : crear un sistema de inventario/ventas de productos de computación. 
 #Testeado en Windows - Linux
 
-#prueba 
 
 #librerias
 import os
