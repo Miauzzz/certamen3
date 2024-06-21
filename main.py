@@ -1,5 +1,8 @@
 # Certamen 3 - 30%
 #Idea : crear un sistema de inventario/ventas de productos de computación. 
+#Testeado en Windows - Linux
+
+
 
 #librerias
 import os
@@ -12,7 +15,8 @@ import datetime
 #################################
 
 usuarios = {
-    "admin" : {"usuario" : "admin", "contraseña": "admin"},
+    "admin" : {"usuario" : "admin", "contraseña": "admin", "uid": 0},
+    "test": {"usuario" : "test", "contraseña": "test", "uid": 1},
 }
 
 productos = {
@@ -25,10 +29,11 @@ productos = {
     "7" : {"id":7,  "nombre" : "Gabinete - MSY m315",          "precio" : 45.00,     "stock" : 1,    "tipo": "gabinete"},
     "8" : {"id":8,  "nombre" : "Placa - Yigabait h312-v",      "precio" : 43.00,     "stock" : 30,   "tipo": "placa"},
 }
+#Crear un historial de compras de cada usuario registrado en el sistema utilizando una lista de diccionarios dentro de la lista principal.
+hist_compras = {}
 
-historial_compras = []
-
-
+#Historial de ventas, debe registrar todas las ventas con usuario, producto, precio, cantidad, total y fecha.
+hist_ventas = {}
 
 #################################
 #   #   #   Funciones   #   #   #
@@ -45,6 +50,7 @@ def register():
         print("El usuario ya existe.\n")
         time.sleep(1.5)
         os.system("cls") if os.name == "nt" else os.system("clear")
+        register()
 
     elif len(user) < 5:
         print("El nombre de usuario debe tener mínimo 5 carácteres.")
@@ -65,7 +71,7 @@ def register():
         register()
 
     else:
-        usuarios[user] = {"usuario": user, "contraseña": password}
+        usuarios[user] = {"usuario": user, "contraseña": password, "uid": len(usuarios) + 1}
         print("\nUsuario registrado exitosamente.\n")
         time.sleep(1.5)
         os.system("cls") if os.name == "nt" else os.system("clear")
@@ -100,7 +106,27 @@ def ver_productos():
         print(f"    {v['id']:<4}|  {v['tipo']:<15}| {v['nombre']:<36}|   ${v['precio']:<5} USD\t |    {v['stock']:<17}\n") #Ajustes de impresión para que se vea bonito
     print("-"*95 + "\n")
 
+def ver_historial_compras():
+    for k,v in hist_compras.items():
+        print("Historial de compras\n")
+        print("Usuario (id) |      Producto            |    Precio    | Cantidad  |   Total   |  Fecha")
+        print("-"*95)
+        print(f" {v['user']}  ({v['uid']})   | {v['producto']}     |    {v['precio']}     |     {v['cantidad']}     |   {v['total']}   | {v['fecha']}")
+        print("-"*95 + "\n")
+    os.system("pause")
+    time.sleep(1.5) #quitar
 
+
+
+def ver_historial_ventas():
+    print("Historial de ventas\n")
+    print("    Usuario\t|    Producto\t\t\t|    Precio\t|    Cantidad\t|    Total\t|    Fecha")
+    print("-"*95)
+    for venta in hist_ventas:
+        print(f"    {venta['usuario']:<10}|  {venta['producto']:<25}|  ${venta['precio']:<5} USD\t|  {venta['cantidad']:<10}|  ${venta['total']:<10} USD|  {venta['fecha']}")
+    print("-"*95 + "\n")
+    os.system("pause")
+    time.sleep(1.5) #quitar
 
 
 ###########################################
@@ -113,8 +139,9 @@ def menu_admin():
         print("1.- Ver productos disponibles")
         print("2.- Agregar producto")
         print("3.- Modificar producto")
-        print("4.- Eliminar producto")
-        print("5.- Salir de la cuenta")
+        print("4.- ver historial de ventas")
+        print("5.- Eliminar producto")
+        print("6.- Salir de la cuenta")
         opcion = input("Ingrese una opción: ")
 
         if opcion == "1":
@@ -123,17 +150,26 @@ def menu_admin():
             menu_admin()
 
         elif opcion == "2":
-            agregar_producto()
+            os.system("cls") if os.name == "nt" else os.system("clear")
             ver_productos()
+            agregar_producto()
 
         elif opcion == "3":
             os.system("cls") if os.name == "nt" else os.system("clear")
+            ver_productos()
             modificar_producto()
 
         elif opcion == "4":
-            #eliminar_producto()
-            pass
+            os.system("cls") if os.name == "nt" else os.system("clear")
+            ver_historial_ventas()
+            menu_admin()
+
         elif opcion == "5":
+            os.system("cls") if os.name == "nt" else os.system("clear")
+            ver_productos()
+            eliminar_producto()
+
+        elif opcion == "6":
             os.system("cls") if os.name == "nt" else os.system("clear")
             main_manu()
         else:
@@ -151,12 +187,42 @@ def menu_admin():
 
 #Agregar productos
 def agregar_producto():
+    ver_productos()
     print("Agregar productos\n")
-    nombre = input("Ingrese el nombre del producto: ")       
+
+    nombre = input("Ingrese el nombre del producto: ")
+    if nombre == "": # Validar que el nombre no esté vacío
+        print("El nombre no puede estar vacío.")
+        time.sleep(1)
+        os.system("cls") if os.name == "nt" else os.system("clear")
+        
+    elif nombre in productos: # Validar que el nombre no exista en el diccionario
+        print("El producto ya existe.")
+        time.sleep(1)
+        os.system("cls") if os.name == "nt" else os.system("clear")
+
+
     precio = float(input("Ingrese el precio del producto: "))
-    stock = int(input("Ingrese el stock del producto: "))
+    if precio == "": # Validar que el precio no esté vacío
+        print("El precio no puede estar vacío.")
+        os.system("cls") if os.name == "nt" else os.system("clear")
+        
+
+    stock = int(input("Ingrese la cantidad de stock que se agregará al producto: "))
+    if stock == "" or stock < 0: # Validar que el stock no esté vacío
+        print("El stock no puede estar vacío, ni ser negativo")
+        os.system("cls") if os.name == "nt" else os.system("clear")
+
+
     tipo = input("Ingrese el tipo de producto: ")
-    id = len(productos) + 1                                                                      # ID único y autoincremental (longitud del diccionario + 1) 
+    if tipo == "": # Validar que el tipo no esté vacío
+        print("El tipo no puede estar vacío.")
+        os.system("cls") if os.name == "nt" else os.system("clear")
+
+    id = len(productos) + 1
+    if id in productos: # Validar que el ID no exista en el diccionario
+        id += 1
+        
     productos[id] = {"id": id, "nombre": nombre, "precio": precio, "stock": stock, "tipo": tipo} # Agregar producto al diccionario
     print("Producto agregado exitosamente.")
     time.sleep(2) 
@@ -165,8 +231,8 @@ def agregar_producto():
 
 
 def modificar_producto():
-    ver_productos()
     print("Modificar producto\n")
+    ver_productos()
     id = input("Ingrese el ID del producto que desea modificar: ")
     if id in productos:
         nombre = input("Ingrese el nuevo nombre del producto: ")
@@ -191,8 +257,8 @@ def modificar_producto():
 
 
 def eliminar_producto():
-    print("Eliminar producto\n")
     ver_productos()
+    print("Eliminar producto\n")
     id = input("Ingrese el ID del producto que desea eliminar: ")
     if id in productos:
         del productos[id]
@@ -201,7 +267,7 @@ def eliminar_producto():
         os.system("cls") if os.name == "nt" else os.system("clear")
         menu_admin()
     else:
-        print("El producto no existe.")
+        print("El producto no existe")
 
 #####################################
 #   #   Funciónes de usuario    #   #
@@ -213,8 +279,9 @@ def menu_user():
         print("Bienvenido/a a MyGamingSetup\n")
         print("1.- Ver productos disponibles") #Mostrar lista con productos
         print("2.- Comprar producto")          #Seleccionar producto y cantidad
-        print("3.- Gestionar cuenta")          #Cambiar contraseña, borrar cuenta.
-        print("4.- Salir de la cuenta")        #Salir de la cuenta
+        print("3.- Ver historial de compras")  #Mostrar historial de compras
+        print("4.- Gestionar cuenta")          #Cambiar contraseña, borrar cuenta.
+        print("5.- Salir de la cuenta")        #Salir de la cuenta
         opcion = input("Ingrese una opción: ")
 
         if opcion == "1":
@@ -223,14 +290,21 @@ def menu_user():
             menu_user()
 
         elif opcion == "2":
+            os.system("cls") if os.name == "nt" else os.system("clear")
             comprar_producto()
             menu_user()
 
         elif opcion == "3":
             os.system("cls") if os.name == "nt" else os.system("clear")
-            gestionar_cuenta()
+            ver_historial_compras()
+            menu_user()
 
         elif opcion == "4":
+            os.system("cls") if os.name == "nt" else os.system("clear")
+            gestionar_cuenta()
+
+        elif opcion == "5":
+            os.system("cls") if os.name == "nt" else os.system("clear")
             main_manu()
 
         else:
@@ -246,13 +320,26 @@ def menu_user():
         
 #opción 2 : Comprar productos
 def comprar_producto():
-    producto_comprar = input("\nSeleccione ID del producto: ")
+    ver_productos()
+    try:
+        print("Comprar producto\n")
+        print("Para volver, solo presione enter con el campo vacío.")
+        producto_comprar = input("Seleccione ID del producto: ")
+        if producto_comprar == "":
+            os.system("cls") if os.name == "nt" else os.system("clear")
+            return
+    except ValueError:
+        print("ERROR: porfavor, ingrese una de las opciones en pantalla.")
+        time.sleep(2)
+        os.system("cls") if os.name == "nt" else os.system("clear")
+        return  
 
     # Validamos la existencia del producto
     if producto_comprar not in productos:
         print("El producto seleccionado no existe.")
-        return # Salir de la función si el producto no existe en el inventario
-
+        time.sleep(1.5)
+        os.system("cls") if os.name == "nt" else os.system("clear")
+        return
     while True:
         try:
             cantidad = int(input("Ingrese la cantidad: "))
@@ -261,14 +348,21 @@ def comprar_producto():
                 continue    # Vuelve al inicio del bucle while
             if productos[producto_comprar]["stock"] < cantidad:
                 print("Lo sentimos, no hay suficiente stock del producto seleccionado.\n")
+                time.sleep(1.5)
+                os.system("cls") if os.name == "nt" else os.system("clear")
+                comprar_producto()
             else:
                 productos[producto_comprar]["stock"] -= cantidad
                 print(f"Total a pagar: ${productos[producto_comprar]['precio']*cantidad} USD")
+                #agregar al historial de compras
+                hist_ventas[producto_comprar] = {"user": user, "uid": usuarios[user]["uid"], "producto": productos[producto_comprar]["nombre"], "precio": productos[producto_comprar]["precio"], "cantidad": cantidad, "total": productos[producto_comprar]["precio"]*cantidad, "fecha": datetime.datetime.now()}
                 os.system("pause")
+                time.sleep(1.5) #quitar
                 os.system("cls") if os.name == "nt" else os.system("clear")
                 break  # Salir del bucle si la compra es exitosa
         except ValueError:
             print("Por favor, ingrese un número válido.")
+    
 
 def gestionar_cuenta():
     global user
@@ -279,6 +373,7 @@ def gestionar_cuenta():
         print("3.- Volver al menú principal")
         opcion = input("Ingrese una opción: ")
         if opcion == "1":
+            os.system("cls") if os.name == "nt" else os.system("clear")
             cambiar_contraseña()
 
         elif opcion == "2": #borrar cuenta del usuario en sesion iniciada
@@ -289,6 +384,7 @@ def gestionar_cuenta():
             main_manu()
 
         elif opcion == "3":
+            os.system("cls") if os.name == "nt" else os.system("clear")
             menu_user()
     except ValueError:
         print("ERROR: porfavor, ingrese una de las opciones en pantalla.")
@@ -329,8 +425,10 @@ def cambiar_contraseña():
 #   #   #   Menu principal   #   #   #
 ######################################
 def main_manu():
+    os.system("cls") if os.name == "nt" else os.system("clear")
     try: #aplicamos el try para evitar errores en el programa
-        print("Bienvenido/a a MyGamingSetup\n")
+        print("Bienvenido/a a MyGamingSetup")
+        print("*Para poder acceder a nuestro catálogo de productos, porfavor registrese o inicie sesión.\n")
         print("1.-Registrate")
         print("2.-Iniciar Sesión")
         print("3.-Salir del programa")

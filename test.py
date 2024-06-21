@@ -12,7 +12,8 @@ import string
 #   #   #   variables   #   #   #
 #################################
 usuarios = {
-    "admin" : {"usuario" : "admin", "contraseña": "admin"},
+    "admin" : {"usuario" : "admin", "contraseña": "admin", id: 0},
+    "test": {"usuario" : "test", "contraseña": "test", "id": 1},
 }
 
 productos = {
@@ -25,6 +26,24 @@ productos = {
     "7" : {"id":7,"nombre" : "Gabinete - MSY m315",          "precio" : 45.0,     "stock" : 1,    "tipo": "gabinete"},
     "8" : {"id":8,"nombre" : "Placa - Yigabait h312-v",      "precio" : 43.0,     "stock" : 30,   "tipo": "placa"},
 }
+
+historial_compras = {
+    "Historial": {"user": "test", "id":"1", "producto": "Monitor - Azuls VG24", "precio": 125.00, "cantidad": 1, "total": 125.00, "fecha": "2021-06-01"}}
+
+
+for k,v in historial_compras.items():
+    print("Historial de compras\n")
+    print("Usuario (id) |      Producto            |    Precio    | Cantidad  |   Total   |  Fecha")
+    print("-"*95)
+    print(f" {v['user']}  ({v['id']})   | {v['producto']}     |    {v['precio']}     |     {v['cantidad']}     |   {v['total']}   | {v['fecha']}")
+    print("-"*95 + "\n")
+
+
+
+
+
+
+
 
 def ver_productos():
     print("    ID\t|      Tipo\t  |\t\tNombre\t\t\t|      Precio\t |   Stock")
@@ -46,8 +65,6 @@ def agregar_productos():
     print("Producto agregado exitosamente.")
     ver_productos()
 
-ver_productos()
-agregar_productos()
 
 
 
