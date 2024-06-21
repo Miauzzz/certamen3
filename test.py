@@ -7,7 +7,7 @@ import os
 import sys
 import time
 import datetime
-
+from colors import bcolors
 
 #################################
 #   #   #   variables   #   #   #
@@ -42,29 +42,29 @@ for k,v in historial_compras.items():
 
 
 
+print(bcolors+"Texto de color celeste")
 
 
 
+# def ver_productos():
+#     print("    ID\t|      Tipo\t  |\t\tNombre\t\t\t|      Precio\t |   Stock")
 
-def ver_productos():
-    print("    ID\t|      Tipo\t  |\t\tNombre\t\t\t|      Precio\t |   Stock")
-
-    print("-"*95)
-    for k,v in productos.items():
-        print(f"    {v['id']:<4}|  {v['tipo']:<15}| {v['nombre']:<36}|   ${v['precio']:<5} USD\t |    {v['stock']:<17}\n") #Ajustes de impresión para que se vea bonito
-    print("-"*95 + "\n")
+#     print("-"*95)
+#     for k,v in productos.items():
+#         print(f"    {v['id']:<4}|  {v['tipo']:<15}| {v['nombre']:<36}|   ${v['precio']:<5} USD\t |    {v['stock']:<17}\n") #Ajustes de impresión para que se vea bonito
+#     print("-"*95 + "\n")
 
 
-def agregar_productos():
-    print("Agregar productos\n")
-    nombre = input("Ingrese el nombre del producto: ")
-    precio = float(input("Ingrese el precio del producto: "))
-    stock = int(input("Ingrese el stock del producto: "))
-    tipo = input("Ingrese el tipo de producto: ")
-    id = len(productos) + 1
-    productos[str(id)] = {"id": id, "nombre": nombre, "precio": precio, "stock": stock, "tipo": tipo}
-    print("Producto agregado exitosamente.")
-    ver_productos()
+# def agregar_productos():
+#     print("Agregar productos\n")
+#     nombre = input("Ingrese el nombre del producto: ")
+#     precio = float(input("Ingrese el precio del producto: "))
+#     stock = int(input("Ingrese el stock del producto: "))
+#     tipo = input("Ingrese el tipo de producto: ")
+#     id = len(productos) + 1
+#     productos[str(id)] = {"id": id, "nombre": nombre, "precio": precio, "stock": stock, "tipo": tipo}
+#     print("Producto agregado exitosamente.")
+#     ver_productos()
 
 
 
