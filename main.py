@@ -21,18 +21,20 @@ usuarios = {
 }
 
 productos = {
-    "1" : {"id":1,  "nombre" : "Monitor - Azuls VG24",         "precio" : 125.00,    "stock" : 10,   "tipo": "MONITOR"},
-    "2" : {"id":2,  "nombre" : "Teclado - Jayperex FPS",       "precio" : 60.00,     "stock" : 10,   "tipo": "TECLADO"},
-    "3" : {"id":3,  "nombre" : "Mouse - Jayperex Surge",       "precio" : 30.00,     "stock" : 10,   "tipo": "MOUSE"},
-    "4" : {"id":4,  "nombre" : "CPU - kore y9-1",              "precio" : 150.00,    "stock" : 30,   "tipo": "CPU"},
-    "5" : {"id":5,  "nombre" : "Tarjeta de video - RTK 4100",  "precio" : 300.00,    "stock" : 23,   "tipo": "GPU"},
-    "6" : {"id":6,  "nombre" : "RAM - Cruzar Valistic",        "precio" : 20.00,     "stock" : 4,    "tipo": "RAM"},
-    "7" : {"id":7,  "nombre" : "Gabinete - MSY m315",          "precio" : 45.00,     "stock" : 1,    "tipo": "GABINETE"},
-    "8" : {"id":8,  "nombre" : "Placa - Yigabait h312-v",      "precio" : 43.00,     "stock" : 30,   "tipo": "PLACA"},
+    "1" : {"id":1,  "nombre" : "AZULS - VG24",           "precio" : 125.00,    "stock" : 10,   "tipo": "MONITOR"},
+    "2" : {"id":2,  "nombre" : "JAYPEREX - FPS",         "precio" : 60.00,     "stock" : 10,   "tipo": "TECLADO"},
+    "3" : {"id":3,  "nombre" : "JAYPEREX - SURGE",       "precio" : 30.00,     "stock" : 10,   "tipo": "MOUSE"},
+    "4" : {"id":4,  "nombre" : "INTREL - CORE Y9-20",    "precio" : 150.00,    "stock" : 30,   "tipo": "CPU"},
+    "5" : {"id":5,  "nombre" : "NTIVIA - RTK - 4100",    "precio" : 300.00,    "stock" : 23,   "tipo": "GPU"},
+    "6" : {"id":6,  "nombre" : "CRUZIAL - VALISTIC",     "precio" : 20.00,     "stock" : 4,    "tipo": "RAM"},
+    "7" : {"id":7,  "nombre" : "MSY - M315",             "precio" : 45.00,     "stock" : 1,    "tipo": "GABINETE"},
+    "8" : {"id":8,  "nombre" : "YIGABAIT - H312-V",      "precio" : 43.00,     "stock" : 30,   "tipo": "PLACA"},
 }
 
-
+#Historial de compras que visualiza el usuario (cada usuario tiene su propio historial)
 hist_compras = {}
+
+#Historial que visualiza el admin (todas las ventas)
 hist_ventas = {}
 
 #################################
@@ -159,11 +161,15 @@ def ver_historial_compras():
     if len(hist_compras) == 0:
         print(bcolors.HEADER+"No hay compras registradas."+bcolors.ENDC)
         print("-"*87 + "\n")
-    for k,v in hist_compras.items():   
+    for k,v in hist_compras.items():
+        #hacer que la separacion, coincida con la cantidad de caracteres
         print(f" {v['producto']}     |    {v['precio']}     |     {v['cantidad']}     |   {v['total']}   | {v['fecha']}")
-        print("-"*87 + "\n")
+        print("-"*87)
     os.system("pause")
     os.system("cls") if os.name == "nt" else os.system("clear")
+    #Hacer que todo se vea ordenado con | y -
+    #Mostrar solo las compras del usuario en sesión
+    
 
 
 
@@ -172,6 +178,7 @@ def ver_historial_ventas():
     print("    Usuario\t|    Producto\t\t\t|    Precio\t|    Cantidad\t|    Total\t|    Fecha")
     print("-"*115)
     for venta in hist_ventas:
+        #hacer que la separacion, coincida con la cantidad de caracteres
         print(f"    {venta['usuario']:<10}|  {venta['producto']:<25}|  ${venta['precio']:<5} USD\t|  {venta['cantidad']:<10}|  ${venta['total']:<10} USD|  {venta['fecha']}")
     print("-"*115 + "\n")
     os.system("pause")
@@ -244,8 +251,40 @@ def agregar_producto():
     ver_productos()
     print(bcolors.OKCYAN+bcolors.UNDERLINE+"Agregar productos\n"+bcolors.ENDC)
     print("Para volver, regresar al menú principal, escriba 'Q'")
-    nombre = input(bcolors.WARNING+"Ingrese el nombre del producto: "+bcolors.ENDC)
+    print(bcolors.HEADER+"(*En casos de agregar un producto existente se sumará el stock al producto existente*)"+bcolors.ENDC)
+    #Preguntar por id, si existe se suma el stock
+    id = input(bcolors.WARNING+"Ingrese el ID del producto que desea agregar: "+bcolors.ENDC)
+    if id == "q" or id == "Q":
+        os.system("cls") if os.name == "nt" else os.system("clear")
+        menu_admin()
     
+    if id in productos:
+        stock = int(input(bcolors.WARNING+"Ingrese la cantidad de stock que se agregará al producto: "+bcolors.ENDC))
+        if stock == "q" or stock == "Q":
+            os.system("cls") if os.name == "nt" else os.system("clear")
+            menu_admin()
+
+        productos[id]["stock"] += stock
+        print(bcolors.OKGREEN+"Stock agregado exitosamente.")
+        time.sleep(1.5)
+        os.system("cls") if os.name == "nt" else os.system("clear")
+        menu_admin()
+
+    tipo = input(bcolors.WARNING+"Ingrese el tipo de producto: "+bcolors.ENDC).upper()
+    if tipo == "q" or tipo == "Q":
+        os.system("cls") if os.name == "nt" else os.system("clear")
+        menu_admin()
+        
+    if tipo == "": # Validar que el tipo no esté vacío
+        print(bcolors.FAIL+"El tipo no puede estar vacío.")
+        os.system("cls") if os.name == "nt" else os.system("clear")
+
+    marca = input(bcolors.WARNING+"Ingrese la marca del producto: "+bcolors.ENDC).upper()
+    if marca == "q" or marca == "Q":
+        os.system("cls") if os.name == "nt" else os.system("clear")
+        menu_admin()
+
+    nombre = input(bcolors.WARNING+"Ingrese el nombre del producto: "+bcolors.ENDC).upper()
     if nombre == "q" or nombre == "Q":
         os.system("cls") if os.name == "nt" else os.system("clear")
         menu_admin()
@@ -280,17 +319,8 @@ def agregar_producto():
         print(bcolors.FAIL+"El stock no puede estar vacío, ni ser negativo")
         os.system("cls") if os.name == "nt" else os.system("clear")
 
-    tipo = input(bcolors.WARNING+"Ingrese el tipo de producto: "+bcolors.ENDC)
-    if tipo == "q" or tipo == "Q":
-        os.system("cls") if os.name == "nt" else os.system("clear")
-        menu_admin()
-        
-    if tipo == "": # Validar que el tipo no esté vacío
-        print(bcolors.FAIL+"El tipo no puede estar vacío.")
-        os.system("cls") if os.name == "nt" else os.system("clear")
-
     #Agregar producto al diccionario
-    productos[len(productos)+1] = {"id": len(productos)+1, "nombre": nombre, "precio": precio, "stock": stock, "tipo": tipo}
+    productos[len(productos)+1] = {"id": len(productos)+1, "nombre": marca+" - "+nombre, "precio": precio, "stock": stock, "tipo": tipo}
     print(bcolors.OKGREEN+"Producto agregado exitosamente.")
 
     #Mostrar producto recién agregado
@@ -305,19 +335,30 @@ def modificar_producto():
     os.system("cls") if os.name == "nt" else os.system("clear")
     print(bcolors.OKCYAN+bcolors.UNDERLINE+"Modificar producto\n\n"+bcolors.ENDC)
     ver_productos()
+
     id = input(bcolors.WARNING+"Ingrese el ID del producto que desea modificar: "+bcolors.ENDC)
+    if id == "q" or id == "Q":
+        os.system("cls") if os.name == "nt" else os.system("clear")
+        menu_admin()
+
     if id in productos:
-        print(bcolors.HEADER+"Si no desea modificar el stock, deje el campo vacío y presione 'Enter'.")
-        nombre = input(bcolors.WARNING+"Ingrese el nuevo nombre del producto: "+bcolors.ENDC)
+        print(bcolors.HEADER+"Si no desea modificar el nombre, deje el campo vacío y presione 'Enter'.")
+        nombre = input(bcolors.WARNING+"Ingrese el nuevo nombre del producto: "+bcolors.ENDC).upper()
         if nombre == "":
             nombre = productos[id]["nombre"]
+
+        print(bcolors.HEADER+"Si no desea modificar el precio, deje el campo vacío y presione 'Enter'.")
         precio = float(input(bcolors.WARNING+"Ingrese el nuevo precio del producto: "+bcolors.ENDC))
         if precio == "":
             precio = productos[id]["precio"]
+
+        print(bcolors.HEADER+"Si no desea modificar el stock, deje el campo vacío y presione 'Enter'.")
         stock = int(input(bcolors.WARNING+"Ingrese el nuevo stock del producto: "+bcolors.ENDC))
         if stock == "":
             stock = productos[id]["stock"]
-        tipo = input(bcolors.WARNING+"Ingrese el nuevo tipo de producto: "+bcolors.ENDC)
+
+        print(bcolors.HEADER+"Si no desea modificar el tipo, deje el campo vacío y presione 'Enter'.")
+        tipo = input(bcolors.WARNING+"Ingrese el nuevo tipo de producto: "+bcolors.ENDC).upper()
         if tipo == "":
             tipo = productos[id]["tipo"]
         #Modificar producto
@@ -448,7 +489,7 @@ def comprar_producto():
         comprar_producto()
     while True:
         try:
-            cantidad = input(bcolors.WARNING+"Ingrese la cantidad: "+bcolors.ENDC)
+            cantidad = int(input(bcolors.WARNING+"Ingrese la cantidad: "+bcolors.ENDC))
             if cantidad <= 0:
                 print(bcolors.FAIL+"Por favor, ingrese un número mayor a 0.")
                 continue    # Vuelve al inicio del bucle while
