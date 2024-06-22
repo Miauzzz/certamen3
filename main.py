@@ -51,9 +51,15 @@ def register():
         print(bcolors.OKCYAN+"Registrarse en MyGamingSetup\n"+bcolors.ENDC)
         print("Para volver al menú principal, escriba 'Q'.")
         user = input(bcolors.WARNING+"Ingrese un nombre de usuario: "+bcolors.ENDC).lower()
-        if user =="q":
+        if user =="q" or user == "Q":
             os.system("cls") if os.name == "nt" else os.system("clear")
             main_menu()
+        
+        if user == "":
+            print(bcolors.FAIL+"El nombre de usuario no puede estar vacío.\n")
+            time.sleep(1)
+            os.system("cls") if os.name == "nt" else os.system("clear")
+            register()
 
         if user in usuarios:
             print(bcolors.FAIL+"El usuario ya existe.\n")
@@ -193,6 +199,7 @@ def ver_historial_ventas():
 ###########################################
 #   #   Funciónes de administrador    #   #
 ###########################################
+
 #Menú admin
 def menu_admin():
     try:
