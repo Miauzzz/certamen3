@@ -1,13 +1,13 @@
 # Certamen 3 - 30%
 #Idea : crear un sistema de inventario/ventas de productos de computación. 
-#Testeado en Windows - Linux
+#Testeado en Windows - Linux (las pausas pueden fallar en os basados en unix)
 
 #librerias
-import os
-import sys
-import time
-import datetime
-from colors import bcolors
+import os                   #Libreria para poder ejecutar comandos del sistema
+import sys                  #Libreria para poder ejecutar comandos del sistema
+import time                 #Libreria para poder hacer pausas en el programa
+import datetime             #Libreria para obtener la fecha y hora actual
+from colors import bcolors  #Se importa clase bcolors del archivo colors.py
 
 
 #################################
@@ -22,14 +22,14 @@ usuarios = {
 
 #Diccionario de productos, con id, marca, nombre, precio, stock y tipo de producto
 productos = {
-    "1" : {"id":"1",  "marca": "" ,"nombre" : "AZULS - VG24",           "precio" : 125.00,    "stock" : 10,   "tipo": "MONITOR"},
-    "2" : {"id":"2",  "marca": "" ,"nombre" : "JAYPEREX - FPS",         "precio" : 60.00,     "stock" : 10,   "tipo": "TECLADO"},
-    "3" : {"id":"3",  "marca": "" ,"nombre" : "JAYPEREX - SURGE",       "precio" : 30.00,     "stock" : 10,   "tipo": "MOUSE"},
-    "4" : {"id":"4",  "marca": "" ,"nombre" : "INTREL - CORE Y9-20",    "precio" : 150.00,    "stock" : 30,   "tipo": "CPU"},
-    "5" : {"id":"5",  "marca": "" ,"nombre" : "NTIVIA - RTK - 4100",    "precio" : 300.00,    "stock" : 23,   "tipo": "GPU"},
-    "6" : {"id":"6",  "marca": "" ,"nombre" : "CRUZIAL - VALISTIC",     "precio" : 20.00,     "stock" : 4,    "tipo": "RAM"},
-    "7" : {"id":"7",  "marca": "" ,"nombre" : "MSY - M315",             "precio" : 45.00,     "stock" : 1,    "tipo": "GABINETE"},
-    "8" : {"id":"8",  "marca": "" ,"nombre" : "YIGABAIT - H312-V",      "precio" : 43.00,     "stock" : 30,   "tipo": "PLACA"},
+    "1" : {"id":"1",  "marca": "AZULS"      ,"nombre" : "VG24",            "precio" : 125.00,    "stock" : 10,   "tipo": "MONITOR"},
+    "2" : {"id":"2",  "marca": "JAYPEREX"   ,"nombre" : " - FPS",          "precio" : 60.00,     "stock" : 10,   "tipo": "TECLADO"},
+    "3" : {"id":"3",  "marca": "JAYPEREX"   ,"nombre" : " - SURGE",        "precio" : 30.00,     "stock" : 10,   "tipo": "MOUSE"},
+    "4" : {"id":"4",  "marca": "INTREL"     ,"nombre" : " - CORE Y9-20",   "precio" : 150.00,    "stock" : 30,   "tipo": "CPU"},
+    "5" : {"id":"5",  "marca": "NTIVIA"     ,"nombre" : " - RTK - 4100",   "precio" : 300.00,    "stock" : 23,   "tipo": "GPU"},
+    "6" : {"id":"6",  "marca": "CRUZIAL"    ,"nombre" : " - VALISTIC",     "precio" : 20.00,     "stock" : 4,    "tipo": "RAM"},
+    "7" : {"id":"7",  "marca": "MSY"        ,"nombre" : " - M315",         "precio" : 45.00,     "stock" : 1,    "tipo": "GABINETE"},
+    "8" : {"id":"8",  "marca": "YIGABAIT"   ,"nombre" : " - H312-V",       "precio" : 43.00,     "stock" : 30,   "tipo": "PLACA"},
 }
 
 #Usuario en sesión, para saber quien está logueado y poder mostrar su historial de compras.
@@ -192,6 +192,7 @@ def ver_historial_ventas():
     for v in hist_ventas.values():
         print(f"    {v['usuario']:<10}|  {v['producto']:<25}| ${v['precio']:<6} USD  |    {v['cantidad']:<6} |  ${v['total']:<6} USD |  {v['fecha']}")
     print("-"*115 + "\n")
+    
     os.system("pause")
     os.system("cls") if os.name == "nt" else os.system("clear")
 
@@ -300,6 +301,7 @@ def agregar_producto():
         agregar_producto()
 
     marca = input(bcolors.WARNING+"Ingrese la marca del producto: "+bcolors.ENDC).upper()
+    marca = marca + " - " #Agregar un guión al final de la marca
     if marca == "q" or marca == "Q":
         os.system("cls") if os.name == "nt" else os.system("clear")
         menu_admin()
@@ -308,8 +310,10 @@ def agregar_producto():
         time.sleep(1)
         os.system("cls") if os.name == "nt" else os.system("clear")
         agregar_producto()
-
+    
+        
     nombre = input(bcolors.WARNING+"Ingrese el nombre del producto: "+bcolors.ENDC).upper()
+    nombre = marca + nombre #Agregar la marca al nombre del producto
     if nombre == "q" or nombre == "Q":
         os.system("cls") if os.name == "nt" else os.system("clear")
         menu_admin()
@@ -325,7 +329,7 @@ def agregar_producto():
         time.sleep(1)
         os.system("cls") if os.name == "nt" else os.system("clear")
         agregar_producto()
-
+    
 
     precio = float(input(bcolors.WARNING+"Ingrese el precio del producto: "+bcolors.ENDC))
     if precio == "q" or precio == "Q":
@@ -355,7 +359,7 @@ def agregar_producto():
     #Mostrar producto recién agregado
     print("\nProducto agregado:")
     print(f"ID: {len(productos)} | Nombre: {nombre} | Precio: ${precio} USD | Stock: {stock} | Tipo: {tipo}")
-    time.sleep(5) 
+    time.sleep(2.5) 
     os.system("cls") if os.name == "nt" else os.system("clear")
     menu_admin()
 
@@ -370,6 +374,11 @@ def modificar_producto():
     if id.lower() == "q":
         os.system("cls") if os.name == "nt" else os.system("clear")
         menu_admin()
+    if id == "" or None:
+        os.system("cls") if os.name == "nt" else os.system("clear")
+        print(bcolors.FAIL+"Por favor, ingrese un ID válido.")
+        time.sleep(1)
+        modificar_producto()
     
     if id in productos:
         try:
@@ -524,15 +533,15 @@ def comprar_producto():
         print(bcolors.OKCYAN+bcolors.UNDERLINE+"Comprar producto\n"+bcolors.ENDC)
         print("Para volver, regresar al menú principal, escriba 'Q'")
         producto_comprar = input(bcolors.WARNING+"Seleccione ID del producto: "+bcolors.ENDC)
-        time.sleep(0.8)
+        time.sleep(0.6)
         if producto_comprar == "q" or producto_comprar == "Q":
             os.system("cls") if os.name == "nt" else os.system("clear")
             menu_user()
+
         elif producto_comprar == "":
             os.system("cls") if os.name == "nt" else os.system("clear")
             comprar_producto()
             print(bcolors.FAIL+"Por favor, ingrese un ID válido.")
-            
         
 
         # Validamos la existencia del producto
@@ -541,6 +550,7 @@ def comprar_producto():
             time.sleep(1)
             os.system("cls") if os.name == "nt" else os.system("clear")
             comprar_producto()
+
         while True:
             cantidad = int(input(bcolors.WARNING+"Ingrese la cantidad: "+bcolors.ENDC))
             if cantidad < 0:
@@ -557,7 +567,8 @@ def comprar_producto():
 
             else:
                 productos[producto_comprar]["stock"] -= cantidad
-                print(bcolors.OKGREEN+"Total a pagar:"+bcolors.ENDC+f"${productos[producto_comprar]['precio']*cantidad} USD")
+                print(bcolors.OKGREEN+"Total a pagar: "+bcolors.ENDC+f"${productos[producto_comprar]['precio']*cantidad} USD")
+                
                 #confirmar compra, ENTER o Q para cancelar
                 confirmar = input(bcolors.WARNING+"Presione ENTER para confirmar la compra ( 'Q' para cancelar) : "+bcolors.ENDC)
                 if confirmar.lower() == "q":
@@ -565,11 +576,13 @@ def comprar_producto():
                     print(bcolors.FAIL+"Compra cancelada.")
                     time.sleep(1.5)
                     os.system("cls") if os.name == "nt" else os.system("clear")
-                    comprar_producto() 
+                    comprar_producto()
+               
                 #Añadir la compra al historial de compras del usuario en sesion
                 if usuario_sesion not in hist_compras:
                     hist_compras[usuario_sesion] = []
                 hist_compras[usuario_sesion].append({"producto": productos[producto_comprar]["nombre"], "precio": productos[producto_comprar]["precio"], "cantidad": cantidad, "total": productos[producto_comprar]["precio"]*cantidad, "fecha": datetime.datetime.now().strftime("%d/%m/%Y %H:%M:%S")})
+                
                 #Añadir la compra al historial de ventas
                 hist_ventas[len(hist_ventas)+1] = {"usuario": usuario_sesion, "producto": productos[producto_comprar]["nombre"], "precio": productos[producto_comprar]["precio"], "cantidad": cantidad, "total": productos[producto_comprar]["precio"]*cantidad, "fecha": datetime.datetime.now().strftime("%d/%m/%Y %H:%M:%S")}
                 os.system("cls") if os.name == "nt" else os.system("clear")
@@ -605,13 +618,12 @@ def gestionar_cuenta():
             cambiar_contraseña()
 
         elif opcion == "2": #borrar cuenta del usuario en sesion iniciada
-            #borrar cuenta del usuario en sesion iniciada
             if usuario_sesion in usuarios:
                 del usuarios[usuario_sesion]
-            print(bcolors.OKGREEN+"Cuenta eliminada exitosamente.")
-            time.sleep(1.5)
-            os.system("cls") if os.name == "nt" else os.system("clear")
-            main_menu()
+                print(bcolors.OKGREEN+"Cuenta eliminada exitosamente.")
+                time.sleep(1.5)
+                os.system("cls") if os.name == "nt" else os.system("clear")
+                main_menu()
 
         elif opcion == "3":
             os.system("cls") if os.name == "nt" else os.system("clear")
@@ -636,9 +648,33 @@ def gestionar_cuenta():
 
 
 def cambiar_contraseña():
-    global user          
+    global user
     print(bcolors.OKCYAN+bcolors.UNDERLINE+"Cambiar ontraseña\n"+bcolors.ENDC)
-    newpass = input(bcolors.WARNING+"Ingrese su nueva contraseña: "+bcolors.ENDC)
+    print("Para volver, escriba 'Q'")
+    oldpass = input(bcolors.WARNING+"Ingrese su contraseña actual: "+bcolors.ENDC)
+    if oldpass == "q" or oldpass == "Q":
+        os.system("cls") if os.name == "nt" else os.system("clear")
+        gestionar_cuenta()
+
+    if oldpass != usuarios[user]["contraseña"]:
+        print(bcolors.FAIL+"Contraseña incorrecta.")
+        time.sleep(1)
+        os.system("cls") if os.name == "nt" else os.system("clear")
+        cambiar_contraseña()
+    
+    elif oldpass == "":
+        print(bcolors.FAIL+"La contraseña no puede estar vacía.")
+        time.sleep(1)
+        os.system("cls") if os.name == "nt" else os.system("clear")
+        cambiar_contraseña()
+    
+    if oldpass == usuarios[user]["contraseña"]:
+        newpass = input(bcolors.WARNING+"Ingrese su nueva contraseña: "+bcolors.ENDC)
+
+
+    if newpass == "q" or newpass == "Q":
+        os.system("cls") if os.name == "nt" else os.system("clear")
+        gestionar_cuenta()
 
     #La contraseña no puede ser igual a la anterior
     if newpass == usuarios[user]["contraseña"]:
