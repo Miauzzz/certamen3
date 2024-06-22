@@ -517,6 +517,7 @@ def comprar_producto():
         print(bcolors.OKCYAN+bcolors.UNDERLINE+"Comprar producto\n"+bcolors.ENDC)
         print("Para volver, regresar al menú principal, escriba 'Q'")
         producto_comprar = input(bcolors.WARNING+"Seleccione ID del producto: "+bcolors.ENDC)
+        time.sleep(0.8)
         if producto_comprar == "q" or producto_comprar == "Q":
             os.system("cls") if os.name == "nt" else os.system("clear")
             menu_user()
@@ -524,6 +525,7 @@ def comprar_producto():
             os.system("cls") if os.name == "nt" else os.system("clear")
             comprar_producto()
             print(bcolors.FAIL+"Por favor, ingrese un ID válido.")
+            
         
 
         # Validamos la existencia del producto
