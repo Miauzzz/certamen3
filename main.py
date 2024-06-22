@@ -20,23 +20,19 @@ usuarios = {
     "test": {"usuario" : "test", "contraseña": "test", "uid": 1},
 }
 
-# productos = {
-#     "1" : {"id":1,  "nombre" : "Monitor - Azuls VG24",         "precio" : 125.00,    "stock" : 10,   "tipo": "monitor"},
-#     "2" : {"id":2,  "nombre" : "Teclado - Jayperex FPS",       "precio" : 60.00,     "stock" : 10,   "tipo": "teclado"},
-#     "3" : {"id":3,  "nombre" : "Mouse - Jayperex Surge",       "precio" : 30.00,     "stock" : 10,   "tipo": "mouse"},
-#     "4" : {"id":4,  "nombre" : "CPU - kore y9-1",              "precio" : 150.00,    "stock" : 30,   "tipo": "cpu"},
-#     "5" : {"id":5,  "nombre" : "Tarjeta de video - RTK 4100",  "precio" : 300.00,    "stock" : 23,   "tipo": "gpu"},
-#     "6" : {"id":6",  "nombre" : "RAM - Cruzar Valistic",        "precio" : 20.00,     "stock" : 4,    "tipo": "ram"},
-#     "7" : {"id":7,  "nombre" : "Gabinete - MSY m315",          "precio" : 45.00,     "stock" : 1,    "tipo": "gabinete"},
-#     "8" : {"id":8,  "nombre" : "Placa - Yigabait h312-v",      "precio" : 43.00,     "stock" : 30,   "tipo": "placa"},
-# }
-
 productos = {
-
+    "1" : {"id":1,  "nombre" : "Monitor - Azuls VG24",         "precio" : 125.00,    "stock" : 10,   "tipo": "MONITOR"},
+    "2" : {"id":2,  "nombre" : "Teclado - Jayperex FPS",       "precio" : 60.00,     "stock" : 10,   "tipo": "TECLADO"},
+    "3" : {"id":3,  "nombre" : "Mouse - Jayperex Surge",       "precio" : 30.00,     "stock" : 10,   "tipo": "MOUSE"},
+    "4" : {"id":4,  "nombre" : "CPU - kore y9-1",              "precio" : 150.00,    "stock" : 30,   "tipo": "CPU"},
+    "5" : {"id":5,  "nombre" : "Tarjeta de video - RTK 4100",  "precio" : 300.00,    "stock" : 23,   "tipo": "GPU"},
+    "6" : {"id":6,  "nombre" : "RAM - Cruzar Valistic",        "precio" : 20.00,     "stock" : 4,    "tipo": "RAM"},
+    "7" : {"id":7,  "nombre" : "Gabinete - MSY m315",          "precio" : 45.00,     "stock" : 1,    "tipo": "GABINETE"},
+    "8" : {"id":8,  "nombre" : "Placa - Yigabait h312-v",      "precio" : 43.00,     "stock" : 30,   "tipo": "PLACA"},
 }
 
-hist_compras = {}
 
+hist_compras = {}
 hist_ventas = {}
 
 #################################
@@ -247,8 +243,13 @@ def menu_admin():
 def agregar_producto():
     ver_productos()
     print(bcolors.OKCYAN+bcolors.UNDERLINE+"Agregar productos\n"+bcolors.ENDC)
-
+    print("Para volver, regresar al menú principal, escriba 'Q'")
     nombre = input(bcolors.WARNING+"Ingrese el nombre del producto: "+bcolors.ENDC)
+    
+    if nombre == "q" or nombre == "Q":
+        os.system("cls") if os.name == "nt" else os.system("clear")
+        menu_admin()
+
     if nombre == "": # Validar que el nombre no esté vacío
         print(bcolors.FAIL+"El nombre no puede estar vacío.")
         time.sleep(1)
@@ -261,17 +262,29 @@ def agregar_producto():
 
 
     precio = float(input(bcolors.WARNING+"Ingrese el precio del producto: "+bcolors.ENDC))
+    if precio == "q" or precio == "Q":
+        os.system("cls") if os.name == "nt" else os.system("clear")
+        menu_admin()
+
     if precio == "": # Validar que el precio no esté vacío
         print(bcolors.FAIL+"El precio no puede estar vacío.")
         os.system("cls") if os.name == "nt" else os.system("clear")
         
 
     stock = int(input(bcolors.WARNING+"Ingrese la cantidad de stock que se agregará al producto: "+bcolors.ENDC))
+    if stock == "q" or stock == "Q":
+        os.system("cls") if os.name == "nt" else os.system("clear")
+        menu_admin()
+
     if stock == "" or stock < 0: # Validar que el stock no esté vacío
         print(bcolors.FAIL+"El stock no puede estar vacío, ni ser negativo")
         os.system("cls") if os.name == "nt" else os.system("clear")
 
     tipo = input(bcolors.WARNING+"Ingrese el tipo de producto: "+bcolors.ENDC)
+    if tipo == "q" or tipo == "Q":
+        os.system("cls") if os.name == "nt" else os.system("clear")
+        menu_admin()
+        
     if tipo == "": # Validar que el tipo no esté vacío
         print(bcolors.FAIL+"El tipo no puede estar vacío.")
         os.system("cls") if os.name == "nt" else os.system("clear")
