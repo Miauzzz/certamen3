@@ -18,6 +18,3 @@ class bcolors:
     BGPINK= '\033[105m'
     BGWHITE = '\033[107m'
     BGBLACK = '\033[100m'
-
-
-print(bcolors.BGBLACK+"Hola mundo"+bcolors.ENDC+" Hola mundo")

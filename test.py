@@ -9,40 +9,99 @@ import time
 import datetime
 from colors import bcolors
 
+
+
+
+
+# Punto 1: Modificar un producto
+def modificar_producto(productos, id, tipo, marca, nombre, precio):
+    # Verificar si el producto existe
+    if id in productos:
+        id = str(id) # Convertir a string para evitar errores
+        
+        productos[id] = {"id": id, "tipo": tipo, "marca": marca, "nombre": nombre, "precio": precio}
+        print("Producto modificado exitosamente.")
+    else:
+        print("El producto no existe.")
+
+# Punto 3: Eliminar un producto
+def eliminar_producto(productos, id):
+    if id in productos:
+        del productos[id]
+        print("Producto eliminado exitosamente.")
+    else:
+        print("El producto no existe.")
+
+# Punto 4: Listar productos
+def listar_productos(productos):
+    for id, producto in productos.items():
+        print(f"ID: {id}, Nombre: {producto['nombre']}, Precio: {producto['precio']}, Stock: {producto['stock']}, Tipo: {producto['tipo']}")
+
+# Ejemplo de uso
+productos = {
+    "1": {"id": "1", "nombre": "Producto 1", "precio": 100, "stock": 50, "tipo": "Tipo 1"},
+    "2": {"id": "2", "nombre": "Producto 2", "precio": 200, "stock": 30, "tipo": "Tipo 2"}
+}
+
+# Modificar un producto
+modificar_producto(productos, "1", "Producto 1 Modificado", 150, 45, "Tipo 1 Modificado")
+
+# Eliminar un producto
+eliminar_producto(productos, "2")
+
+# Listar productos
+listar_productos(productos)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 #################################
 #   #   #   variables   #   #   #
 #################################
-usuarios = {
-    "admin" : {"usuario" : "admin", "contraseña": "admin", id: 0},
-    "test": {"usuario" : "test", "contraseña": "test", "id": 1},
-}
+# usuarios = {
+#     "admin" : {"usuario" : "admin", "contraseña": "admin", id: 0},
+#     "test": {"usuario" : "test", "contraseña": "test", "id": 1},
+# }
 
-productos = {
-    "1" : {"id":1,"nombre" : "Monitor - Azuls VG24",         "precio" : 125.0,    "stock" : 10,   "tipo": "monitor"},
-    "2" : {"id":2,"nombre" : "Teclado - Jayperex FPS",       "precio" : 60.0,     "stock" : 10,   "tipo": "teclado"},
-    "3" : {"id":3,"nombre" : "Mouse - Jayperex Surge",       "precio" : 30.0,     "stock" : 10,   "tipo": "mouse"},
-    "4" : {"id":4,"nombre" : "CPU - kore y9-1",              "precio" : 150.0,    "stock" : 30,   "tipo": "cpu"},
-    "5" : {"id":5,"nombre" : "Tarjeta de video - RTK 4100",  "precio" : 300.0,    "stock" : 23,   "tipo": "gpu"},
-    "6" : {"id":6,"nombre" : "RAM - Cruzar Valistic",        "precio" : 20.0,     "stock" : 4,    "tipo": "ram"},
-    "7" : {"id":7,"nombre" : "Gabinete - MSY m315",          "precio" : 45.0,     "stock" : 1,    "tipo": "gabinete"},
-    "8" : {"id":8,"nombre" : "Placa - Yigabait h312-v",      "precio" : 43.0,     "stock" : 30,   "tipo": "placa"},
-}
+# productos = {
+#     "1" : {"id":1,"nombre" : "Monitor - Azuls VG24",         "precio" : 125.0,    "stock" : 10,   "tipo": "monitor"},
+#     "2" : {"id":2,"nombre" : "Teclado - Jayperex FPS",       "precio" : 60.0,     "stock" : 10,   "tipo": "teclado"},
+#     "3" : {"id":3,"nombre" : "Mouse - Jayperex Surge",       "precio" : 30.0,     "stock" : 10,   "tipo": "mouse"},
+#     "4" : {"id":4,"nombre" : "CPU - kore y9-1",              "precio" : 150.0,    "stock" : 30,   "tipo": "cpu"},
+#     "5" : {"id":5,"nombre" : "Tarjeta de video - RTK 4100",  "precio" : 300.0,    "stock" : 23,   "tipo": "gpu"},
+#     "6" : {"id":6,"nombre" : "RAM - Cruzar Valistic",        "precio" : 20.0,     "stock" : 4,    "tipo": "ram"},
+#     "7" : {"id":7,"nombre" : "Gabinete - MSY m315",          "precio" : 45.0,     "stock" : 1,    "tipo": "gabinete"},
+#     "8" : {"id":8,"nombre" : "Placa - Yigabait h312-v",      "precio" : 43.0,     "stock" : 30,   "tipo": "placa"},
+# }
 
-historial_compras = {
-    "Historial": {"user": "test", "id":"1", "producto": "Monitor - Azuls VG24", "precio": 125.00, "cantidad": 1, "total": 125.00, "fecha": "2021-06-01"}}
-
-
-for k,v in historial_compras.items():
-    print("Historial de compras\n")
-    print("Usuario (id) |      Producto            |    Precio    | Cantidad  |   Total   |  Fecha")
-    print("-"*95)
-    print(f" {v['user']}  ({v['id']})   | {v['producto']}     |    {v['precio']}     |     {v['cantidad']}     |   {v['total']}   | {v['fecha']}")
-    print("-"*95 + "\n")
+# historial_compras = {
+#     "Historial": {"user": "test", "id":"1", "producto": "Monitor - Azuls VG24", "precio": 125.00, "cantidad": 1, "total": 125.00, "fecha": "2021-06-01"}}
 
 
+# for k,v in historial_compras.items():
+#     print("Historial de compras\n")
+#     print("Usuario (id) |      Producto            |    Precio    | Cantidad  |   Total   |  Fecha")
+#     print("-"*95)
+#     print(f" {v['user']}  ({v['id']})   | {v['producto']}     |    {v['precio']}     |     {v['cantidad']}     |   {v['total']}   | {v['fecha']}")
+#     print("-"*95 + "\n")
 
 
-print(bcolors+"Texto de color celeste")
+
+
+# print(bcolors+"Texto de color celeste")
 
 
 
