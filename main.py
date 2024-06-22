@@ -207,7 +207,7 @@ def menu_admin():
         print(bcolors.OKCYAN+"Bienvenido/a al menú de administración"+bcolors.ENDC)
         print("1.- Ver productos disponibles")
         print("2.- Agregar producto")
-        print("3.- Modificar producto") #Esta funcion debe permitir modificar el nombre, el precio, añadir stock(solo sumar) modificar el tipo
+        print("3.- Modificar producto")
         print("4.- ver historial de ventas")
         print("5.- Eliminar producto")
         print("6.- Salir de la cuenta")
@@ -265,12 +265,21 @@ def agregar_producto():
     print("Para volver al menú principal, escriba 'Q'")
     print(bcolors.HEADER+"(*En casos de agregar un producto ya existente, solo se le sumará el stock*)"+bcolors.ENDC)
     print("(Dejar en blanco para añadir uno nuevo)")
-    id = input(bcolors.WARNING+"Ingrese el ID del producto que desea agregar: "+bcolors.ENDC)
+    #necesito ingresar un int, pero que deje pasar el enter para agregar un nuevo producto
+    id = int(input(bcolors.WARNING+"Ingrese el ID del producto que desea agregar: "+bcolors.ENDC)) 
     
     if id == "q" or id == "Q":
         os.system("cls") if os.name == "nt" else os.system("clear")
-        menu_admin()
-    
+        menu_admin()  
+
+    elif id == "":
+        id = str(len(productos)+1)      #Si el id esta vacío, se le asignará el siguiente número en la lista
+
+    else :
+        id = str(id)                    #Se transforma el ID a string para poder ser agregado al diccionario
+        
+
+    #si el id ya existe, se le sumará el stock
     if id in productos:
         stock = int(input(bcolors.WARNING+"Ingrese la cantidad de stock que se agregará al producto: "+bcolors.ENDC))
         if stock == "q" or stock == "Q":
@@ -289,29 +298,41 @@ def agregar_producto():
         os.system("cls") if os.name == "nt" else os.system("clear")
         menu_admin()
 
+    #Validar que el ID no sea mayor a 4 digitos
+    elif len(str(id)) > 4:
+        print(bcolors.FAIL+"El ID no puede ser mayor a 4 digitos.")
+        time.sleep(1)
+        os.system("cls") if os.name == "nt" else os.system("clear")
+        agregar_producto()
+
+    #tipo de producto
     tipo = input(bcolors.WARNING+"Ingrese el tipo de producto: "+bcolors.ENDC).upper()
     if tipo == "q" or tipo == "Q":
         os.system("cls") if os.name == "nt" else os.system("clear")
         menu_admin()
-        
-    elif tipo == "": # Validar que el tipo no esté vacío
+
+    #Validar que el tipo no esté vacío
+    elif tipo == "":
         print(bcolors.FAIL+"El tipo no puede estar vacío.")
         time.sleep(1)
         os.system("cls") if os.name == "nt" else os.system("clear")
         agregar_producto()
 
+    #Se ingresa la Marca y el Nombre del producto
     marca = input(bcolors.WARNING+"Ingrese la marca del producto: "+bcolors.ENDC).upper()
-    marca = marca + " - " #Agregar un guión al final de la marca
+    marca = marca + " - "                                                                       #Agregar un guión al final de la marca
     if marca == "q" or marca == "Q":
         os.system("cls") if os.name == "nt" else os.system("clear")
         menu_admin()
-    elif marca == "": # Validar que la marca no esté vacía
+
+    #Validar que la marca no esté vacía
+    elif marca == "":
         print(bcolors.FAIL+"La marca no puede estar vacía.")
         time.sleep(1)
         os.system("cls") if os.name == "nt" else os.system("clear")
         agregar_producto()
     
-        
+    #Se ingresa el nombre del producto y se le agrega la marca
     nombre = input(bcolors.WARNING+"Ingrese el nombre del producto: "+bcolors.ENDC).upper()
     nombre = marca + nombre #Agregar la marca al nombre del producto
     if nombre == "q" or nombre == "Q":
@@ -340,6 +361,7 @@ def agregar_producto():
         print(bcolors.FAIL+"El precio no puede estar vacío.")
         time.sleep(1)
         os.system("cls") if os.name == "nt" else os.system("clear")
+        agregar_producto()
         
 
     stock = int(input(bcolors.WARNING+"Ingrese la cantidad de stock del producto:  "+bcolors.ENDC))
@@ -351,9 +373,11 @@ def agregar_producto():
         print(bcolors.FAIL+"El stock no puede estar vacío, ni ser negativo")
         time.sleep(1)
         os.system("cls") if os.name == "nt" else os.system("clear")
+        agregar_producto()
 
     #Agregar producto al diccionario
-    productos[str(len(productos)+1)] = {"id": len(productos)+1, "marca": marca, "nombre": nombre, "precio": precio, "stock": stock, "tipo": tipo}
+    id = str(id) if id != "" else str(len(productos)+1)
+    productos[id] = {"id": id, "marca": marca, "nombre": nombre, "precio": precio, "stock": stock, "tipo": tipo}
     print(bcolors.OKGREEN+"Producto agregado exitosamente.")
 
     #Mostrar producto recién agregado
