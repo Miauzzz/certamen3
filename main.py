@@ -156,7 +156,7 @@ def ver_productos():
 
 def ver_historial_compras():
     print(bcolors.OKCYAN+bcolors.UNDERLINE+"Historial de compras\n"+bcolors.ENDC)
-    print("      Producto            |    Precio    | Cantidad  |   Total   |\tFecha")
+    print("        Producto          |    Precio    | Cantidad  |   Total   |\tFecha")
     print("-"*87)
     if len(hist_compras) == 0:
         print(bcolors.HEADER+"No hay compras registradas."+bcolors.ENDC)
@@ -167,19 +167,27 @@ def ver_historial_compras():
         print("-"*87)
     os.system("pause")
     os.system("cls") if os.name == "nt" else os.system("clear")
-    #Hacer que todo se vea ordenado con | y -
-    #Mostrar solo las compras del usuario en sesión
-    
-
 
 
 def ver_historial_ventas():
     print(bcolors.OKCYAN+bcolors.UNDERLINE+"Historial de ventas\n"+bcolors.ENDC)
-    print("    Usuario\t|    Producto\t\t\t|    Precio\t|    Cantidad\t|    Total\t|    Fecha")
+    #ajustar la impresion para que se vea bonito
+    print("    Usuario   |        Producto\t\t  |    Precio    | Cantidad  |\t  Total    |\tFecha  /   Hora")
     print("-"*115)
-    for venta in hist_ventas:
+    for v in hist_ventas.values():
+        print(f"    {v['usuario']:<10}|  {v['producto']:<25}| ${v['precio']:<6} USD  |    {v['cantidad']:<6} |  ${v['total']:<6} USD |  {v['fecha']}")
         #hacer que la separacion, coincida con la cantidad de caracteres
-        print(f"    {venta['usuario']:<10}|  {venta['producto']:<25}|  ${venta['precio']:<5} USD\t|  {venta['cantidad']:<10}|  ${venta['total']:<10} USD|  {venta['fecha']}")
+        if len(v['producto']) > 25:
+            print(f"{' '*21}|  {v['producto'][25:]}")
+        if len(v['producto']) > 50:
+            print(f"{' '*21}|  {v['producto'][50:]}")
+        if len(v['producto']) > 75:
+            print(f"{' '*21}|  {v['producto'][75:]}")
+        if len(v['producto']) > 100:
+            print(f"{' '*21}|  {v['producto'][100:]}")
+        if len(v['producto']) > 125:
+            print(f"{' '*21}|  {v['producto'][125:]}")
+            
     print("-"*115 + "\n")
     os.system("pause")
     os.system("cls") if os.name == "nt" else os.system("clear")
@@ -512,6 +520,10 @@ def comprar_producto():
         except ValueError:
             print(bcolors.FAIL+"ERROR:"+bcolors.ENDC+"Por favor, ingrese un número válido.")
         except KeyboardInterrupt:
+            print(bcolors.FAIL+"ERROR:"+bcolors.ENDC+"porfavor, ingrese una de las opciones en pantalla.")
+            time.sleep(1)
+            os.system("cls") if os.name == "nt" else os.system("clear")
+        except KeyError:
             print(bcolors.FAIL+"ERROR:"+bcolors.ENDC+"porfavor, ingrese una de las opciones en pantalla.")
             time.sleep(1)
             os.system("cls") if os.name == "nt" else os.system("clear")
