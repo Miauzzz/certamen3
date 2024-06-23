@@ -264,7 +264,7 @@ def agregar_producto():
     print(bcolors.HEADER+"(*En casos de agregar un producto ya existente, solo se le sumará el stock*)"+bcolors.ENDC)
     print("(Dejar en blanco para añadir uno nuevo)")
     #necesito ingresar un int, pero que deje pasar el enter para agregar un nuevo producto
-    id = int(input(bcolors.WARNING+"Ingrese el ID del producto que desea agregar: "+bcolors.ENDC))
+    id = input(bcolors.WARNING+"Ingrese el ID del producto que desea agregar: "+bcolors.ENDC)
 
     if id == "q" or id == "Q":
         os.system("cls") if os.name == "nt" else os.system("clear")
@@ -311,8 +311,7 @@ def agregar_producto():
         agregar_producto()
 
     #Se ingresa la Marca y el Nombre del producto
-    marca = input(bcolors.WARNING+"Ingrese la marca del producto: "+bcolors.ENDC).upper()
-    marca = marca + " - "                                                                       #Agregar un guión al final de la marca
+    marca = input(bcolors.WARNING+"Ingrese la marca del producto: "+bcolors.ENDC).upper()                                                                    #Agregar un guión al final de la marca
     if marca == "q" or marca == "Q":
         os.system("cls") if os.name == "nt" else os.system("clear")
         menu_admin()
@@ -326,7 +325,6 @@ def agregar_producto():
     
     #Se ingresa el nombre del producto y se le agrega la marca
     nombre = input(bcolors.WARNING+"Ingrese el nombre del producto: "+bcolors.ENDC).upper()
-    nombre = marca + nombre #Agregar la marca al nombre del producto
     if nombre == "q" or nombre == "Q":
         os.system("cls") if os.name == "nt" else os.system("clear")
         menu_admin()
@@ -386,7 +384,7 @@ def modificar_producto():
     ver_productos()
     #Crear una funcion para poder modificar el producto seleccionado por ID
     print("Para regresar al menú principal, escriba 'Q'")
-    id = input(bcolors.WARNING+"Ingrese el ID del producto que desea modificar: "+bcolors.ENDC)
+    id = str(int(input(bcolors.WARNING+"Ingrese el ID del producto que desea modificar: "+bcolors.ENDC)))
     if id.lower() == "q":
         os.system("cls") if os.name == "nt" else os.system("clear")
         menu_admin()
@@ -453,11 +451,7 @@ def modificar_producto():
             time.sleep(1.5)
             os.system("cls") if os.name == "nt" else os.system("clear")
             modificar_producto()
-        except KeyError:
-            print(bcolors.FAIL+"Por favor, ingrese un valor válido.")
-            time.sleep(1.5)
-            os.system("cls") if os.name == "nt" else os.system("clear")
-            modificar_producto()
+            
 
 
 def eliminar_producto():
