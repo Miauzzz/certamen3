@@ -5,6 +5,7 @@
 #librerias
 import os                   #Libreria para poder ejecutar comandos del sistema
 import sys                  #Libreria para poder ejecutar comandos del sistema
+import getpass              #Libreria para poder ocultar la contraseña al ingresarla
 import time                 #Libreria para poder hacer pausas en el programa
 import datetime             #Libreria para obtener la fecha y hora actual
 from colors import bcolors  #Se importa clase bcolors del archivo colors.py
@@ -76,7 +77,7 @@ def register():
             os.system("cls") if os.name == "nt" else os.system("clear")
             register()
 
-        password = input(bcolors.WARNING+"Ingrese su contraseña: "+bcolors.ENDC)
+        password = getpass.getpass(input(bcolors.WARNING+"Ingrese su contraseña: "+bcolors.ENDC))
         if password == "q" or password == "Q":
             os.system("cls") if os.name == "nt" else os.system("clear")
             main_menu()
@@ -127,7 +128,7 @@ def login():
             os.system("cls") if os.name == "nt" else os.system("clear")
             main_menu()
 
-        password = input(bcolors.WARNING+"Ingrese su contraseña: "+bcolors.ENDC)
+        password = getpass.getpass(input(bcolors.WARNING+"Ingrese su contraseña: "+bcolors.ENDC))
 
         if password == "q" or password == "Q":
             os.system("cls") if os.name == "nt" else os.system("clear")
