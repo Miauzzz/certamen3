@@ -22,14 +22,14 @@ usuarios = {
 
 #Diccionario de productos, con id, marca, nombre, precio, stock y tipo de producto
 productos = {
-    "1" : {"id":"1",  "marca": "AZULS"      ,"nombre" : "VG24",         "precio" : 125.00,    "stock" : 10,   "tipo": "MONITOR"},
-    "2" : {"id":"2",  "marca": "JAYPEREX"   ,"nombre" : "FPS",          "precio" : 60.00,     "stock" : 93,   "tipo": "TECLADO"},
-    "3" : {"id":"3",  "marca": "JAYPEREX"   ,"nombre" : "SURGE",        "precio" : 30.00,     "stock" : 67,   "tipo": "MOUSE"},
-    "4" : {"id":"4",  "marca": "INTREL"     ,"nombre" : "CORE Y9-20",   "precio" : 150.00,    "stock" : 25,   "tipo": "CPU"},
-    "5" : {"id":"5",  "marca": "NTIVIA"     ,"nombre" : "RTK - 4100",   "precio" : 300.00,    "stock" : 15,   "tipo": "GPU"},
-    "6" : {"id":"6",  "marca": "CRUZIAL"    ,"nombre" : "VALISTIC",     "precio" : 20.00,     "stock" : 85,    "tipo": "RAM"},
-    "7" : {"id":"7",  "marca": "MSY"        ,"nombre" : "M315",         "precio" : 45.00,     "stock" : 0,    "tipo": "GABINETE"},
-    "8" : {"id":"8",  "marca": "YIGABAIT"   ,"nombre" : "H312-V",       "precio" : 43.00,     "stock" : 33,   "tipo": "PLACA"},
+    "1" : {"id":"1",  "marca": "AZULS",      "nombre" : "VG24",         "precio" : 125.00,    "stock" : 10,   "tipo": "MONITOR"},
+    "2" : {"id":"2",  "marca": "JAYPEREX",   "nombre" : "FPS",          "precio" : 60.00,     "stock" : 93,   "tipo": "TECLADO"},
+    "3" : {"id":"3",  "marca": "JAYPEREX",   "nombre" : "SURGE",        "precio" : 30.00,     "stock" : 67,   "tipo": "MOUSE"},
+    "4" : {"id":"4",  "marca": "INTREL",     "nombre" : "CORE Y9-20",   "precio" : 150.00,    "stock" : 25,   "tipo": "CPU"},
+    "5" : {"id":"5",  "marca": "NTIVIA",     "nombre" : "RTK - 4100",   "precio" : 300.00,    "stock" : 15,   "tipo": "GPU"},
+    "6" : {"id":"6",  "marca": "CRUZIAL",    "nombre" : "VALISTIC",     "precio" : 20.00,     "stock" : 85,   "tipo": "RAM"},
+    "7" : {"id":"7",  "marca": "MSY",        "nombre" : "M315",         "precio" : 45.00,     "stock" : 0,    "tipo": "GABINETE"},
+    "8" : {"id":"8",  "marca": "YIGABAIT",   "nombre" : "H312-V",       "precio" : 43.00,     "stock" : 33,   "tipo": "PLACA"},
 }
 
 #Usuario en sesión, para saber quien está logueado y poder mostrar su historial de compras.
@@ -41,6 +41,9 @@ hist_compras = {}
 #Historial que visualiza el admin (todas las ventas)
 hist_ventas = {}
 
+#Comentario Adicional : Todo texto que contenga "bcolors...." es solo decoración, son los colores que se importan de colors.py
+
+
 #################################
 #   #   #   Funciones   #   #   #
 #################################
@@ -49,7 +52,7 @@ hist_ventas = {}
 def register():
     try:
         print(bcolors.OKCYAN+"Registrarse en MyGamingSetup\n"+bcolors.ENDC)
-        print("Para volver al menú principal, escriba 'Q'.")
+        print("Para volver al menú principal, escriba 'Q'.\n")
         user = input(bcolors.WARNING+"Ingrese un nombre de usuario: "+bcolors.ENDC).lower()
         if user =="q" or user == "Q":
             os.system("cls") if os.name == "nt" else os.system("clear")
@@ -117,7 +120,7 @@ def login():
         global user
         global usuario_sesion
         print(bcolors.OKCYAN+"Iniciar sesión en MyGamingSetup\n"+bcolors.ENDC)
-        print("Para volver al menú principal, escriba 'Q'.")
+        print("Para volver al menú principal, escriba 'Q'.\n")
         user = input(bcolors.WARNING+"Ingrese un nombre de usuario: "+bcolors.ENDC)
 
         if user == "q" or user == "Q":
@@ -164,25 +167,23 @@ def login():
 def ver_productos():
     os.system("cls") if os.name == "nt" else os.system("clear")
     print(bcolors.OKCYAN+bcolors.UNDERLINE+"Productos disponibles\n"+bcolors.ENDC)
-    print("    ID\t|      Tipo\t  |    Marca     /    Nombre\t    |      Precio\t |   Stock")
+    print(bcolors.OKGREEN+"    ID\t"+bcolors.ENDC+"|"+bcolors.OKGREEN+"      Tipo\t  "+bcolors.ENDC+"|"+bcolors.OKGREEN+"    Marca     /    Nombre\t    "+bcolors.ENDC+"|"+bcolors.OKGREEN+"      Precio\t "+bcolors.ENDC+"|"+bcolors.OKGREEN+"   Stock"+bcolors.ENDC)
     print("-"*95)
-    for v in productos.values():
-        #si stock en al lista productos es value 0, esta debe transformarse en "Agotado"
-        if v["stock"] == 0:
+    for v in productos.values():                                    #Recorre el diccionario de productos y muestra el valor
+        if v["stock"] == 0:                                         #si stock en al lista productos es value 0, esta debe transformarse en "Agotado"
             v["stock"] = bcolors.FAIL+"Agotado"+bcolors.ENDC
-            #36 / 2 = 18 
-        print(f"    {v['id']:<4}|  {v['tipo']:<15}| {v['marca']:<8} - {v['nombre']:<20} |    ${v['precio']:<5} USD\t |    {v['stock']:<17}\n") #Ajustes de impresión para que se vea bonito
+        print(bcolors.HEADER+f"    {v['id']:<4}"+bcolors.ENDC+"|"+f"  {v['tipo']:<15}| {v['marca']:<8} - {v['nombre']:<20} |    ${v['precio']:<5} USD\t |    {v['stock']:<17}") #Ajustes de impresión para que se vea bonito
     print("-"*95 + "\n")
 
 #En este historial se muestra el historial de compras del usuario en sesion
 def ver_historial_compras():
     global usuario_sesion
     print(bcolors.OKCYAN+bcolors.UNDERLINE+"Historial de compras\n"+bcolors.ENDC)
-    print(bcolors.OKGREEN+"     Producto\t\t  "+bcolors.ENDC+"|"+bcolors.OKGREEN+"    Precio     "+bcolors.ENDC+"|"+bcolors.OKGREEN+" Cantidad  "+bcolors.ENDC+"|"+bcolors.OKGREEN+"\t    Total      "+bcolors.ENDC+"|"+bcolors.OKGREEN+"   Fecha   /   Hora"+bcolors.ENDC)
+    print(bcolors.OKGREEN+"     Producto\t\t   "+bcolors.ENDC+"|"+bcolors.OKGREEN+"    Precio     "+bcolors.ENDC+"|"+bcolors.OKGREEN+" Cantidad  "+bcolors.ENDC+"|"+bcolors.OKGREEN+"     Total      "+bcolors.ENDC+"|"+bcolors.OKGREEN+"   Fecha   /   Hora"+bcolors.ENDC)
     print("-"*95)
     if usuario_sesion in hist_compras:
         for v in hist_compras[usuario_sesion]:
-            print(" {v['producto']:<25}| ${v['precio']:<6}  USD  |    {v['cantidad']:<6} |  ${v['total']:<6}  USD  |  {v['fecha']}")
+            print(f"  {v['producto']:<25}| ${v['precio']:<6}  USD  |    {v['cantidad']:<6} |  ${v['total']:<6}  USD  |  {v['fecha']}")
     else:
         print(bcolors.HEADER+"Haz una compra y podrás ver el registro de tus compras aquí."+bcolors.ENDC)
     print("-"*95 + "\n")
@@ -783,7 +784,7 @@ def main_menu():
     os.system("cls") if os.name == "nt" else os.system("clear")
     try: #aplicamos el try para evitar errores en el programa
         print(bcolors.OKCYAN+"Bienvenido/a a MyGamingSetup"+bcolors.ENDC)
-        print(bcolors.OKGREEN+"*Para poder acceder a nuestro catálogo de productos, porfavor "+bcolors.WARNING+bcolors.UNDERLINE+"registate"+bcolors.ENDC+bcolors.OKGREEN+" o "+bcolors.WARNING+bcolors.UNDERLINE+"inicia sesión.\n"+bcolors.ENDC)
+        print(bcolors.OKGREEN+"*Para poder acceder a nuestro catálogo de productos, porfavor "+bcolors.WARNING+bcolors.UNDERLINE+"Registrate"+bcolors.ENDC+bcolors.OKGREEN+" o "+bcolors.WARNING+bcolors.UNDERLINE+"Inicia sesión.\n"+bcolors.ENDC)
         print("1.-Registrate")
         print("2.-Iniciar Sesión")
         print("3.-Salir del programa\n")
