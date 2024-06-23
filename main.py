@@ -42,7 +42,9 @@ hist_compras = {}
 #Historial que visualiza el admin (todas las ventas)
 hist_ventas = {}
 
-#Comentario Adicional : Todo texto que contenga "bcolors...." es solo decoración, son los colores que se importan de colors.py
+#Comentario Adicional : Todo texto que contenga "bcolors...." es solo decorativo.
+#Se utilizan para darle un toque más visual al programa, y diferenciar los mensajes de error, de los mensajes de información, etc.
+#al igual que algunos arreglos de impresión, para que se vea más ordenado (como los historiales de compra/venta).
 
 
 #################################
@@ -165,7 +167,7 @@ def login():
         os.system("cls") if os.name == "nt" else os.system("clear")
         login()
 
-#Ver productos disponibles
+#Ver el catálogo de productos disponibles
 def ver_productos():
     os.system("cls") if os.name == "nt" else os.system("clear")
     print(bcolors.OKCYAN+bcolors.UNDERLINE+"Productos disponibles\n"+bcolors.ENDC)
@@ -177,36 +179,6 @@ def ver_productos():
             v["stock"] = bcolors.FAIL+"Agotado"+bcolors.ENDC
         print(bcolors.HEADER+f"    {v['id']:<4}"+bcolors.ENDC+"|"+f"  {v['tipo']:<15}| {v['marca']:<13}- {v['nombre']:<16} |    ${v['precio']:<5} USD\t |    {v['stock']:<17}") #Ajustes de impresión para que se vea bonito
     print("-"*95 + "\n")
-
-#En este historial se muestra el historial de compras del usuario en sesion
-def ver_historial_compras():
-    global usuario_sesion   #Se declara la variable global para poder usarla en la función
-    print(bcolors.OKCYAN+bcolors.UNDERLINE+"Historial de compras\n"+bcolors.ENDC)
-    #Se imprime el historial de compras del usuario en sesión, con formato tabla, aplicando algunos colores.
-    print(bcolors.OKGREEN+"     Producto\t\t   "+bcolors.ENDC+"|"+bcolors.OKGREEN+"    Precio     "+bcolors.ENDC+"|"+bcolors.OKGREEN+" Cantidad  "+bcolors.ENDC+"|"+bcolors.OKGREEN+"     Total      "+bcolors.ENDC+"|"+bcolors.OKGREEN+"   Fecha   /   Hora"+bcolors.ENDC)
-    print("-"*95)
-    if usuario_sesion in hist_compras: #Si el usuario en sesión tiene compras, se mostrarán en pantalla
-        for v in hist_compras[usuario_sesion]: #Recorre el historial de compras del usuario en sesión y muestra el valor
-            print(f"  {v['producto']:<25}| "+bcolors.OKGREEN+"$"+bcolors.ENDC+f"{v['precio']:<6}  USD  |    {v['cantidad']:<6} |  "+bcolors.OKGREEN+"$"+bcolors.ENDC+f"{v['total']:<6}  USD  |  {v['fecha']}")
-    else:   #Si el usuario en sesión no tiene compras, se mostrará un mensaje en pantalla
-        print(bcolors.HEADER+"Haz una compra y podrás ver el registro de tus compras aquí."+bcolors.ENDC)
-    print("-"*95 + "\n")
-    os.system("pause")
-    os.system("cls") if os.name == "nt" else os.system("clear")
-
-#En este historial se puede ver a detealle todas las ventas realizadas en el sistema y su respectivo comprador
-def ver_historial_ventas():
-    print(bcolors.OKCYAN+bcolors.UNDERLINE+"Historial de ventas\n"+bcolors.ENDC)
-    #Se imprime el historial de ventas, con formato tabla, aplicando algunos colores.
-    print(bcolors.OKGREEN+"    Usuario   "+bcolors.ENDC+"|"+bcolors.OKGREEN+"        Producto\t\t  "+bcolors.ENDC+"|"+bcolors.OKGREEN+"    Precio    "+bcolors.ENDC+"|"+bcolors.OKGREEN+" Cantidad  "+bcolors.ENDC+"|"+bcolors.OKGREEN+"\t  Total     "+bcolors.ENDC+"|"+bcolors.OKGREEN+"\tFecha  /   Hora"+bcolors.ENDC)
-    print("-"*115)
-    if len(hist_ventas) == 0:   #Si no hay ventas registradas, se mostrará un mensaje en pantalla
-        print(bcolors.HEADER+"No hay ventas registradas."+bcolors.ENDC)
-    for v in hist_ventas.values():  #Recorre el historial de ventas y muestra los valores del diccionario 
-        print(bcolors.HEADER+f"    {v['usuario']:<10}"+bcolors.ENDC+f"|  {v['producto']:<25}| "+bcolors.OKGREEN+"$"+bcolors.ENDC+f"{v['precio']:<6} USD  |    {v['cantidad']:<6} |  "+bcolors.OKGREEN+"$"+bcolors.ENDC+f"{v['total']:<6} USD |  {v['fecha']}")
-    print("-"*115 + "\n")
-    os.system("pause")
-    os.system("cls") if os.name == "nt" else os.system("clear")
 
 
 ###########################################
@@ -539,6 +511,20 @@ def eliminar_producto():
             time.sleep(1.5)
             os.system("cls" if os.name == "nt" else "clear")
         
+#En este historial se puede ver a detalle todas las ventas realizadas en el sistema y su respectivo comprador.
+def ver_historial_ventas():
+    print(bcolors.OKCYAN+bcolors.UNDERLINE+"Historial de ventas\n"+bcolors.ENDC)
+    #Se imprime el historial de ventas, con formato tabla, aplicando algunos colores.
+    print(bcolors.OKGREEN+"    Usuario   "+bcolors.ENDC+"|"+bcolors.OKGREEN+"        Producto\t\t  "+bcolors.ENDC+"|"+bcolors.OKGREEN+"    Precio    "+bcolors.ENDC+"|"+bcolors.OKGREEN+" Cantidad  "+bcolors.ENDC+"|"+bcolors.OKGREEN+"\t  Total     "+bcolors.ENDC+"|"+bcolors.OKGREEN+"\tFecha  /   Hora"+bcolors.ENDC)
+    print("-"*115)
+    if len(hist_ventas) == 0:   #Si no hay ventas registradas, se mostrará un mensaje en pantalla
+        print(bcolors.HEADER+"No hay ventas registradas."+bcolors.ENDC)
+    for v in hist_ventas.values():  #Recorre el historial de ventas y muestra los valores del diccionario 
+        print(bcolors.HEADER+f"    {v['usuario']:<10}"+bcolors.ENDC+f"|  {v['producto']:<25}| "+bcolors.OKGREEN+"$"+bcolors.ENDC+f"{v['precio']:<6} USD  |    {v['cantidad']:<6} |  "+bcolors.OKGREEN+"$"+bcolors.ENDC+f"{v['total']:<6} USD |  {v['fecha']}")
+    print("-"*115 + "\n")
+    os.system("pause")
+    os.system("cls") if os.name == "nt" else os.system("clear")
+
 
 #####################################
 #   #   Funciónes de usuario    #   #
@@ -789,7 +775,21 @@ def cambiar_contraseña():
     os.system("cls") if os.name == "nt" else os.system("clear")
     menu_user()
 
-
+#En este historial de compras se puede ver a detalle todas las compras realizadas por el usuario en sesion.
+def ver_historial_compras():
+    global usuario_sesion   #Se declara la variable global para poder usarla en la función
+    print(bcolors.OKCYAN+bcolors.UNDERLINE+"Historial de compras\n"+bcolors.ENDC)
+    #Se imprime el historial de compras del usuario en sesión, con formato tabla, aplicando algunos colores.
+    print(bcolors.OKGREEN+"     Producto\t\t   "+bcolors.ENDC+"|"+bcolors.OKGREEN+"    Precio     "+bcolors.ENDC+"|"+bcolors.OKGREEN+" Cantidad  "+bcolors.ENDC+"|"+bcolors.OKGREEN+"     Total      "+bcolors.ENDC+"|"+bcolors.OKGREEN+"   Fecha   /   Hora"+bcolors.ENDC)
+    print("-"*95)
+    if usuario_sesion in hist_compras: #Si el usuario en sesión tiene compras, se mostrarán en pantalla
+        for v in hist_compras[usuario_sesion]: #Recorre el historial de compras del usuario en sesión y muestra el valor
+            print(f"  {v['producto']:<25}| "+bcolors.OKGREEN+"$"+bcolors.ENDC+f"{v['precio']:<6}  USD  |    {v['cantidad']:<6} |  "+bcolors.OKGREEN+"$"+bcolors.ENDC+f"{v['total']:<6}  USD  |  {v['fecha']}")
+    else:   #Si el usuario en sesión no tiene compras, se mostrará un mensaje en pantalla
+        print(bcolors.HEADER+"Haz una compra y podrás ver el registro de tus compras aquí."+bcolors.ENDC)
+    print("-"*95 + "\n")
+    os.system("pause")
+    os.system("cls") if os.name == "nt" else os.system("clear")
 ######################################
 #   #   #   Menu principal   #   #   #
 ######################################
