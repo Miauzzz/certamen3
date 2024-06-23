@@ -178,13 +178,13 @@ def ver_productos():
 def ver_historial_compras():
     global usuario_sesion
     print(bcolors.OKCYAN+bcolors.UNDERLINE+"Historial de compras\n"+bcolors.ENDC)
-    print("     Producto\t\t  |    Precio    | Cantidad  |\t  Total     |\t Fecha   /   Hora")
+    print(bcolors.OKGREEN+"     Producto\t\t  "+bcolors.ENDC+"|"+bcolors.OKGREEN+"    Precio     "+bcolors.ENDC+"|"+bcolors.OKGREEN+" Cantidad  "+bcolors.ENDC+"|"+bcolors.OKGREEN+"\t    Total      "+bcolors.ENDC+"|"+bcolors.OKGREEN+"   Fecha   /   Hora"+bcolors.ENDC)
     print("-"*95)
     if usuario_sesion in hist_compras:
         for v in hist_compras[usuario_sesion]:
-            print(f"{v['producto']:<25}| ${v['precio']:<6} USD  |    {v['cantidad']:<6} |  ${v['total']:<6} USD |  {v['fecha']}")
+            print(" {v['producto']:<25}| ${v['precio']:<6}  USD  |    {v['cantidad']:<6} |  ${v['total']:<6}  USD  |  {v['fecha']}")
     else:
-        print("No hay historial de compras para este usuario.")
+        print(bcolors.HEADER+"Haz una compra y podrás ver el registro de tus compras aquí."+bcolors.ENDC)
     print("-"*95 + "\n")
     os.system("pause")
     os.system("cls") if os.name == "nt" else os.system("clear")
@@ -192,10 +192,12 @@ def ver_historial_compras():
 #En este historial se puede ver a detealle todas las ventas realizadas en el sistema y su respectivo comprador
 def ver_historial_ventas():
     print(bcolors.OKCYAN+bcolors.UNDERLINE+"Historial de ventas\n"+bcolors.ENDC)
-    print("    Usuario   |        Producto\t\t  |    Precio    | Cantidad  |\t  Total     |\tFecha  /   Hora")
+    print(bcolors.OKGREEN+"    Usuario   "+bcolors.ENDC+"|"+bcolors.OKGREEN+"        Producto\t\t  "+bcolors.ENDC+"|"+bcolors.OKGREEN+"    Precio    "+bcolors.ENDC+"|"+bcolors.OKGREEN+" Cantidad  "+bcolors.ENDC+"|"+bcolors.OKGREEN+"\t  Total     "+bcolors.ENDC+"|"+bcolors.OKGREEN+"\tFecha  /   Hora"+bcolors.ENDC)
     print("-"*115)
+    if len(hist_ventas) == 0:
+        print(bcolors.HEADER+"No hay ventas registradas."+bcolors.ENDC)
     for v in hist_ventas.values():
-        print(f"    {v['usuario']:<10}|  {v['producto']:<25}| ${v['precio']:<6} USD  |    {v['cantidad']:<6} |  ${v['total']:<6} USD |  {v['fecha']}")
+        print(bcolors.HEADER+f"    {v['usuario']:<10}"+bcolors.ENDC+f"|  {v['producto']:<25}| ${v['precio']:<6} USD  |    {v['cantidad']:<6} |  $"+bcolors.OKGREEN+f"{v['total']:<6}"+bcolors.ENDC+f" USD |  {v['fecha']}")
     print("-"*115 + "\n")
     os.system("pause")
     os.system("cls") if os.name == "nt" else os.system("clear")
@@ -538,7 +540,7 @@ def eliminar_producto():
 #Menú de usuario
 def menu_user():
     try:
-        print(bcolors.OKCYAN+f"Hola, "+bcolors.HEADER+f"{user}!")
+        print(bcolors.OKCYAN+f"Hola, "+bcolors.HEADER+f"{user}"+bcolors.OKCYAN+"!")
         print(bcolors.OKCYAN+"Bienvenido/a a MyGamingSetup\n"+bcolors.ENDC)
         print("1.- Ver productos disponibles")
         print("2.- Comprar producto")
@@ -568,19 +570,19 @@ def menu_user():
             main_menu()
 
         else:
-            print(bcolors.FAIL+"\nERROR:"+bcolors.ENDC+"porfavor, ingrese una de las opciones en pantalla.")
+            print(bcolors.FAIL+"\nERROR: "+bcolors.ENDC+"porfavor, ingrese una de las opciones en pantalla.")
             time.sleep(1)
             os.system("cls") if os.name == "nt" else os.system("clear")
             menu_user()
 
     except ValueError: #si el usuario ingresa un valor no valido, se ejecutara el siguiente mensaje y se reiniciara el menu
-        print(bcolors.FAIL+"\nERROR:"+bcolors.ENDC+"porfavor, ingrese una de las opciones en pantalla.")
+        print(bcolors.FAIL+"\nERROR: "+bcolors.ENDC+"porfavor, ingrese una de las opciones en pantalla.")
         time.sleep(1)
         os.system("cls") if os.name == "nt" else os.system("clear")
         menu_user()
 
     except KeyboardInterrupt: #Evitamos que se produzca un crasheo si el usuario presiona Ctrl+C
-        print(bcolors.FAIL+"\nERROR:"+bcolors.ENDC+"porfavor, ingrese una de las opciones en pantalla.")
+        print(bcolors.FAIL+"\nERROR: "+bcolors.ENDC+"porfavor, ingrese una de las opciones en pantalla.")
         time.sleep(1)
         os.system("cls") if os.name == "nt" else os.system("clear")
         menu_user()       
@@ -610,15 +612,21 @@ def comprar_producto():
             comprar_producto()
 
         while True:
-            cantidad = int(input(bcolors.WARNING+"Ingrese la cantidad: "+bcolors.ENDC))
+            cantidad = int(input(bcolors.WARNING + "Ingrese la cantidad: " + bcolors.ENDC))
             if cantidad < 0:
-                print(bcolors.FAIL+"Por favor, ingrese un número mayor a 0.")
+                print(bcolors.FAIL + "Por favor, ingrese un número mayor a 0.")
                 time.sleep(1)
                 os.system("cls") if os.name == "nt" else os.system("clear")
                 comprar_producto()
-
-            if productos[producto_comprar]["stock"] < cantidad:
-                print(bcolors.FAIL+"Lo sentimos, no hay suficiente stock del producto seleccionado.\n")
+            
+            elif productos[producto_comprar]["stock"] == 0 or productos[producto_comprar]["stock"] == "Agotado":
+                print(bcolors.FAIL + "Lo sentimos, el producto seleccionado está agotado.\n")
+                time.sleep(1)
+                os.system("cls") if os.name == "nt" else os.system("clear")
+                comprar_producto()
+            
+            elif productos[producto_comprar]["stock"] < cantidad:
+                print(bcolors.FAIL + "Lo sentimos, no hay suficiente stock del producto seleccionado.\n")
                 time.sleep(1)
                 os.system("cls") if os.name == "nt" else os.system("clear")
                 comprar_producto()
@@ -626,14 +634,14 @@ def comprar_producto():
             else:
                 productos[producto_comprar]["stock"] -= cantidad
                 print(bcolors.OKGREEN+"Total a pagar: "+bcolors.ENDC+f"${productos[producto_comprar]['precio']*cantidad} USD")
-                time.sleep(2)
+                time.sleep(0.5)
                 
                 #confirmar compra, ENTER o Q para cancelar
                 confirmar = input(bcolors.WARNING+"Presione ENTER para confirmar la compra ( 'Q' para cancelar) : "+bcolors.ENDC)
                 if confirmar.lower() == "q":
                     productos[producto_comprar]["stock"] += cantidad
                     print(bcolors.FAIL+"Compra cancelada.")
-                    time.sleep(1.5)
+                    time.sleep(0.7)
                     os.system("cls") if os.name == "nt" else os.system("clear")
                     comprar_producto()
                
@@ -654,15 +662,15 @@ def comprar_producto():
                 break  # Salir del bucle si la compra es exitosa
 
     except ValueError:
-        print(bcolors.FAIL+"ERROR:"+bcolors.ENDC+"Por favor, ingrese un número válido.")
+        print(bcolors.FAIL+"\nERROR: "+bcolors.ENDC+"Porfavor, ingrese un número válido.")
         time.sleep(1)
         os.system("cls") if os.name == "nt" else os.system("clear")
     except KeyboardInterrupt:
-        print(bcolors.FAIL+"ERROR:"+bcolors.ENDC+"porfavor, ingrese una de las opciones en pantalla.")
+        print(bcolors.FAIL+"\nERROR: "+bcolors.ENDC+"porfavor, ingrese una de las opciones en pantalla.")
         time.sleep(1)
         os.system("cls") if os.name == "nt" else os.system("clear")
     except KeyError:
-        print(bcolors.FAIL+"ERROR:"+bcolors.ENDC+"porfavor, ingrese una de las opciones en pantalla.")
+        print(bcolors.FAIL+"\nERROR: "+bcolors.ENDC+"porfavor, ingrese una de las opciones en pantalla.")
         time.sleep(1)
         os.system("cls") if os.name == "nt" else os.system("clear")
 
@@ -775,7 +783,7 @@ def main_menu():
     os.system("cls") if os.name == "nt" else os.system("clear")
     try: #aplicamos el try para evitar errores en el programa
         print(bcolors.OKCYAN+"Bienvenido/a a MyGamingSetup"+bcolors.ENDC)
-        print(bcolors.OKGREEN+"*Para poder acceder a nuestro catálogo de productos, porfavor "+bcolors.WARNING+bcolors.UNDERLINE+"registate"+bcolors.ENDC+" o "+bcolors.WARNING+bcolors.UNDERLINE+"inicia sesión.\n"+bcolors.ENDC)
+        print(bcolors.OKGREEN+"*Para poder acceder a nuestro catálogo de productos, porfavor "+bcolors.WARNING+bcolors.UNDERLINE+"registate"+bcolors.ENDC+bcolors.OKGREEN+" o "+bcolors.WARNING+bcolors.UNDERLINE+"inicia sesión.\n"+bcolors.ENDC)
         print("1.-Registrate")
         print("2.-Iniciar Sesión")
         print("3.-Salir del programa\n")
@@ -798,7 +806,7 @@ def main_menu():
                     |\ ,-'"/  |     ,'
                     |,_  ,--.      /
                     /,-. ,'`.     (_               """+bcolors.OKCYAN+"""MyGamingSetup"""+bcolors.OKBLUE+"""
-                    f  o|  o|__     "`-.   """+bcolors.ENDC+"""~   Nos vemos pronto crack! """+bcolors.ENDC+ bcolors.OKBLUE+"""
+                    f  """+bcolors.ENDC+"o"+bcolors.ENDC+bcolors.OKBLUE+"""|  """+bcolors.ENDC+"o"+bcolors.OKBLUE+"""|__     "`-.   """+bcolors.ENDC+"""~   Nos vemos pronto crack! """+bcolors.ENDC+ bcolors.OKBLUE+"""
                     ,-._.,--'_ `.   _.,-`
                     `"' ___.,'` j,-'
                       `-.__.,--'
