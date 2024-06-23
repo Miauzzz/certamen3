@@ -588,6 +588,7 @@ def menu_user():
         os.system("cls") if os.name == "nt" else os.system("clear")
         menu_user()       
 
+
 def comprar_producto():
     ver_productos()
     try:
@@ -688,6 +689,7 @@ def comprar_producto():
         print(bcolors.FAIL + "\nERROR: " + bcolors.ENDC + "Por favor, ingrese una de las opciones en pantalla.")
         time.sleep(1)
         comprar_producto()  # Llamada recursiva para mantener contexto
+
 
 def gestionar_cuenta():
     try:
