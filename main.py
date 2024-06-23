@@ -588,150 +588,67 @@ def menu_user():
         os.system("cls") if os.name == "nt" else os.system("clear")
         menu_user()       
 
-
-# def comprar_producto():
-#     ver_productos()
-#     try:
-#         print(bcolors.OKCYAN+bcolors.UNDERLINE+"Comprar producto\n"+bcolors.ENDC)
-#         print("Para volver, regresar al menú principal, escriba 'Q'")
-#         producto_comprar = input(bcolors.WARNING+"Seleccione ID del producto: "+bcolors.ENDC)
-#         if producto_comprar == "q" or producto_comprar == "Q":
-#             os.system("cls") if os.name == "nt" else os.system("clear")
-#             menu_user()
-
-#         elif producto_comprar == "":
-#             os.system("cls") if os.name == "nt" else os.system("clear")
-#             comprar_producto()
-#             print(bcolors.FAIL+"Por favor, ingrese un ID válido.")
-        
-
-#         # Validamos la existencia del producto
-#         if producto_comprar not in productos:
-#             print(bcolors.FAIL+"El producto seleccionado no existe.")
-#             time.sleep(1)
-#             os.system("cls") if os.name == "nt" else os.system("clear")
-#             comprar_producto()
-
-#         while True:
-#             cantidad = int(input(bcolors.WARNING + "Ingrese la cantidad: " + bcolors.ENDC))
-#             if cantidad < 0:
-#                 print(bcolors.FAIL + "Por favor, ingrese un número mayor a 0.")
-#                 time.sleep(1)
-#                 os.system("cls") if os.name == "nt" else os.system("clear")
-#                 comprar_producto()
-            
-#             elif productos[producto_comprar]["stock"] == 0 or productos[producto_comprar]["stock"] == "Agotado":
-#                 print(bcolors.FAIL + "Lo sentimos, el producto seleccionado está agotado.\n")
-#                 time.sleep(1)
-#                 os.system("cls") if os.name == "nt" else os.system("clear")
-#                 comprar_producto()
-            
-#             elif productos[producto_comprar]["stock"] < cantidad:
-#                 print(bcolors.FAIL + "Lo sentimos, no hay suficiente stock del producto seleccionado.\n")
-#                 time.sleep(1)
-#                 os.system("cls") if os.name == "nt" else os.system("clear")
-#                 comprar_producto()
-
-#             else:
-#                 productos[producto_comprar]["stock"] -= cantidad
-#                 print(bcolors.OKGREEN+"Total a pagar: "+bcolors.ENDC+f"${productos[producto_comprar]['precio']*cantidad} USD")
-#                 time.sleep(0.5)
-                
-#                 #confirmar compra, ENTER o Q para cancelar
-#                 confirmar = input(bcolors.WARNING+"Presione ENTER para confirmar la compra ( 'Q' para cancelar) : "+bcolors.ENDC)
-#                 if confirmar.lower() == "q":
-#                     productos[producto_comprar]["stock"] += cantidad
-#                     print(bcolors.FAIL+"Compra cancelada.")
-#                     time.sleep(0.7)
-#                     os.system("cls") if os.name == "nt" else os.system("clear")
-#                     comprar_producto()
-               
-#                 #Añadir la compra al historial de compras del usuario en sesion
-#                 if usuario_sesion not in hist_compras:
-#                     hist_compras[usuario_sesion] = []
-#                 #Añadir la compra al historial de compras del usuario en sesion, con marca, nombre, precio, cantidad, total y fecha
-#                 hist_compras[usuario_sesion].append({"producto": productos[producto_comprar]["marca"] + " - " + productos[producto_comprar]["nombre"], "precio": productos[producto_comprar]["precio"], "cantidad": cantidad, "total": productos[producto_comprar]["precio"]*cantidad, "fecha": datetime.datetime.now().strftime("%d/%m/%Y %H:%M:%S")})
-                
-                
-#                 #Añadir la compra al historial de ventas del sistema con marca y nombre del producto, precio, cantidad, total, fecha y usuario
-#                 hist_ventas[len(hist_ventas)+1] = {"usuario": usuario_sesion, "producto": productos[producto_comprar]["marca"] + " - " + productos[producto_comprar]["nombre"], "precio": productos[producto_comprar]["precio"], "cantidad": cantidad, "total": productos[producto_comprar]["precio"]*cantidad, "fecha": datetime.datetime.now().strftime("%d/%m/%Y %H:%M:%S")}
-                
-#                 os.system("cls") if os.name == "nt" else os.system("clear")
-#                 print(bcolors.OKGREEN+"Compra exitosa.")
-#                 time.sleep(0.7)
-#                 os.system("cls") if os.name == "nt" else os.system("clear")
-#                 break  # Salir del bucle si la compra es exitosa
-
-#     except ValueError:
-#         print(bcolors.FAIL+"\nERROR: "+bcolors.ENDC+"Porfavor, ingrese un número válido.")
-#         time.sleep(1)
-#         os.system("cls") if os.name == "nt" else os.system("clear")
-#         comprar_producto()
-
-#     except KeyboardInterrupt:
-#         print(bcolors.FAIL+"\nERROR: "+bcolors.ENDC+"porfavor, ingrese una de las opciones en pantalla.")
-#         time.sleep(1)
-#         os.system("cls") if os.name == "nt" else os.system("clear")
-#         comprar_producto()
-
 def comprar_producto():
     ver_productos()
     try:
         print(bcolors.OKCYAN + bcolors.UNDERLINE + "Comprar producto\n" + bcolors.ENDC)
-        print("Para volver, regresar al menú principal, escriba 'Q'")
+        print("Para regresar al menú principal, ingrese 'Q'")
         producto_comprar = input(bcolors.WARNING + "Seleccione ID del producto: " + bcolors.ENDC)
         if producto_comprar.lower() == "q":
             os.system("cls") if os.name == "nt" else os.system("clear")
             menu_user()
-            return  # Añadir return para detener la ejecución actual
+            
 
         elif producto_comprar == "":
             print(bcolors.FAIL + "Por favor, ingrese un ID válido.")
-            comprar_producto()  # Llamada recursiva, pero sin limpiar pantalla para mantener contexto
-            return
+            comprar_producto()
+            
 
         # Validamos la existencia del producto
         if producto_comprar not in productos:
             print(bcolors.FAIL + "El producto seleccionado no existe.")
             time.sleep(1)
-            comprar_producto()  # Llamada recursiva para mantener contexto
-            return
+            comprar_producto()
+            
 
         while True:
             try:
                 cantidad = int(input(bcolors.WARNING + "Ingrese la cantidad: " + bcolors.ENDC))
+                print("Para volver al menú principal, ingrese 'Q'")
                 if productos[producto_comprar]["stock"] == 0 or productos[producto_comprar]["stock"] == "Agotado":
                     print(bcolors.FAIL + "Lo sentimos, el producto seleccionado está agotado.\n")
                     time.sleep(1)
                     comprar_producto()
-                    return              #Añadir return para detener la ejecución actual        
-                        
-                if cantidad <= 0:
+                           
+                elif cantidad <= 0:
                     print(bcolors.FAIL + "Por favor, ingrese un número mayor a 0.")
-                    continue  # Continuar el loop en vez de llamada recursiva
+                    time.sleep(1)
+                    comprar_producto()
+                    
 
-
-
-                if productos[producto_comprar]["stock"] < cantidad:
+                elif productos[producto_comprar]["stock"] < cantidad:
                     print(bcolors.FAIL + "Lo sentimos, no hay suficiente stock del producto seleccionado.\n")
-                    continue            # Continuar el loop en vez de llamada recursiva
+                    time.sleep(1)
+                    comprar_producto()
+                    
 
                 productos[producto_comprar]["stock"] -= cantidad
                 print(bcolors.OKGREEN + "Total a pagar: " + bcolors.ENDC + f"${productos[producto_comprar]['precio'] * cantidad} USD")
                 time.sleep(0.5)
 
-                # Confirmar compra, ENTER o Q para cancelar
+                # Confirmar la compra, o cancelarla
                 confirmar = input(bcolors.WARNING + "Presione ENTER para confirmar la compra ( 'Q' para cancelar) : " + bcolors.ENDC)
                 if confirmar.lower() == "q":
                     productos[producto_comprar]["stock"] += cantidad
                     print(bcolors.FAIL + "Compra cancelada.")
                     time.sleep(0.7)
                     comprar_producto()  # Llamada recursiva para mantener contexto
-                    return          #Añadir return para detener la ejecución actual
+                    
 
                 # Añadir la compra al historial de compras del usuario en sesión
-                if usuario_sesion not in hist_compras:
+                elif usuario_sesion not in hist_compras:
                     hist_compras[usuario_sesion] = []
+
                 # Añadir la compra al historial de compras del usuario en sesión
                 hist_compras[usuario_sesion].append({
                     "producto": productos[producto_comprar]["marca"] + " - " + productos[producto_comprar]["nombre"],
@@ -761,11 +678,16 @@ def comprar_producto():
                 print(bcolors.FAIL + "Por favor, ingrese un número válido.")
                 time.sleep(1)
 
+    except TypeError:
+        print(bcolors.FAIL + "Producto agotado.")       #Tuvimos que acudir a una solución rápida para evitar errores, pero no es la mejor forma de hacerlo
+        time.sleep(1)
+        comprar_producto()
+
+
     except KeyboardInterrupt:
         print(bcolors.FAIL + "\nERROR: " + bcolors.ENDC + "Por favor, ingrese una de las opciones en pantalla.")
         time.sleep(1)
         comprar_producto()  # Llamada recursiva para mantener contexto
-
 
 def gestionar_cuenta():
     try:
