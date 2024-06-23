@@ -208,41 +208,41 @@ def ver_historial_ventas():
 #Menú admin
 def menu_admin():
     try:
-        print(bcolors.OKCYAN+"Bienvenido/a al menú de administración"+bcolors.ENDC)
+        print(bcolors.OKCYAN+"Bienvenido/a al menú de administración\n"+bcolors.ENDC)
         print("1.- Ver productos disponibles")
         print("2.- Agregar producto")
         print("3.- Modificar producto")
         print("4.- ver historial de ventas")
         print("5.- Eliminar producto")
-        print("6.- Salir de la cuenta")
-        opcion = int(input(bcolors.WARNING+"Ingrese una opción: "+bcolors.ENDC))
+        print("6.- Salir de la cuenta\n")
+        opcion = input(bcolors.WARNING+"Ingrese una opción: "+bcolors.ENDC)
 
-        if opcion == 1:
+        if opcion == "1":
             os.system("cls") if os.name == "nt" else os.system("clear")
             ver_productos()
             menu_admin()
-
-        elif opcion == 2:
+        
+        elif opcion == "2":
             os.system("cls") if os.name == "nt" else os.system("clear")
             ver_productos()
             agregar_producto()
-
-        elif opcion == 3:
+        
+        elif opcion == "3":
             os.system("cls") if os.name == "nt" else os.system("clear")
             ver_productos()
             modificar_producto()
-
-        elif opcion == 4:
+        
+        elif opcion == "4":
             os.system("cls") if os.name == "nt" else os.system("clear")
             ver_historial_ventas()
             menu_admin()
-
-        elif opcion == 5:
+        
+        elif opcion == "5":
             os.system("cls") if os.name == "nt" else os.system("clear")
             ver_productos()
             eliminar_producto()
-
-        elif opcion == 6:
+        
+        elif opcion == "6":
             os.system("cls") if os.name == "nt" else os.system("clear")
             main_menu()
         else:
@@ -259,163 +259,204 @@ def menu_admin():
 
 
 def agregar_producto():
-    print(bcolors.OKCYAN+bcolors.UNDERLINE+"Agregar productos\n"+bcolors.ENDC)
-    print("Para volver al menú principal, escriba 'Q'")
-    print(bcolors.HEADER+"(*En casos de agregar un producto ya existente, solo se le sumará el stock*)"+bcolors.ENDC)
-    print("(Dejar en blanco para añadir uno nuevo)")
-    #necesito ingresar un int, pero que deje pasar el enter para agregar un nuevo producto
-    id = input(bcolors.WARNING+"Ingrese el ID del producto que desea agregar: "+bcolors.ENDC)
+    os.system("cls") if os.name == "nt" else os.system("clear")
+    ver_productos()
+    try:
+        print(bcolors.OKCYAN+bcolors.UNDERLINE+"Agregar productos\n"+bcolors.ENDC)
+        print("Para volver al menú principal, escriba 'Q'")
+        print(bcolors.HEADER+"(*En casos de agregar un producto ya existente, solo se le sumará el stock*)"+bcolors.ENDC)
+        print("(Dejar en blanco para añadir uno nuevo)")
+        id = input(bcolors.WARNING+"Ingrese el ID del producto: "+bcolors.ENDC)
+        
+        if id not in '1234567890Qq': 
+            os.system("cls") if os.name == "nt" else os.system("clear")
+            print(bcolors.FAIL+"Por favor, ingrese un ID válido.")
+            time.sleep(1)
+            agregar_producto()
+            
+        if id == "q" or id == "Q":
+            os.system("cls") if os.name == "nt" else os.system("clear")
+            menu_admin()
 
-    if id == "q" or id == "Q":
-        os.system("cls") if os.name == "nt" else os.system("clear")
-        menu_admin()
-    
 
-    #si el id ya existe, se le sumará el stock
-    if id in productos:
-        stock = int(input(bcolors.WARNING+"Ingrese la cantidad de stock que se agregará al producto: "+bcolors.ENDC))
+        #si el id ya existe, se le sumará el stock
+        if id in productos:
+            stock = int(input(bcolors.WARNING+"Ingrese la cantidad de stock que se agregará al producto: "+bcolors.ENDC))
+            if stock == "q" or stock == "Q":
+                os.system("cls") if os.name == "nt" else os.system("clear")
+                menu_admin()
+
+            elif stock == "" or stock < 0:
+                print(bcolors.FAIL+"El stock no puede estar vacío, ni ser negativo")
+                time.sleep(1.5)
+                os.system("cls") if os.name == "nt" else os.system("clear")
+                agregar_producto()
+
+            productos[id]["stock"] += stock
+            print(bcolors.OKGREEN+"Stock agregado exitosamente.")
+            time.sleep(1.5)
+            os.system("cls") if os.name == "nt" else os.system("clear")
+            menu_admin()
+
+        #Validar que el ID no sea mayor a 4 digitos
+        elif len(str(id)) > 4:
+            print(bcolors.FAIL+"El ID no puede ser mayor a 4 digitos.")
+            time.sleep(1)
+            os.system("cls") if os.name == "nt" else os.system("clear")
+            agregar_producto()
+
+        #tipo de producto
+        tipo = input(bcolors.WARNING+"Ingrese el tipo de producto: "+bcolors.ENDC).upper()
+        if tipo == "q" or tipo == "Q":
+            os.system("cls") if os.name == "nt" else os.system("clear")
+            menu_admin()
+
+        #Validar que el tipo no esté vacío
+        elif tipo == "":
+            print(bcolors.FAIL+"El tipo no puede estar vacío.")
+            time.sleep(1)
+            os.system("cls") if os.name == "nt" else os.system("clear")
+            agregar_producto()
+
+        #Se ingresa la Marca y el Nombre del producto
+        marca = input(bcolors.WARNING+"Ingrese la marca del producto: "+bcolors.ENDC).upper()                                                                    #Agregar un guión al final de la marca
+        if marca == "q" or marca == "Q":
+            os.system("cls") if os.name == "nt" else os.system("clear")
+            menu_admin()
+
+        #Validar que la marca no esté vacía
+        elif marca == "":
+            print(bcolors.FAIL+"La marca no puede estar vacía.")
+            time.sleep(1)
+            os.system("cls") if os.name == "nt" else os.system("clear")
+            agregar_producto()
+
+        #Se ingresa el nombre del producto y se le agrega la marca
+        nombre = input(bcolors.WARNING+"Ingrese el nombre del producto: "+bcolors.ENDC).upper()
+        if nombre == "q" or nombre == "Q":
+            os.system("cls") if os.name == "nt" else os.system("clear")
+            menu_admin()
+
+        if nombre == "": # Validar que el nombre no esté vacío
+            print(bcolors.FAIL+"El nombre no puede estar vacío.")
+            time.sleep(1)
+            os.system("cls") if os.name == "nt" else os.system("clear")
+            agregar_producto()
+
+        elif nombre in productos: # Validar que el nombre no exista en el diccionario
+            print(bcolors.FAIL+"El producto ya existe.")
+            time.sleep(1)
+            os.system("cls") if os.name == "nt" else os.system("clear")
+            agregar_producto()
+
+        #Se ingresa el precio del producto y se valida que no esté vacío
+        precio = float(input(bcolors.WARNING+"Ingrese el precio del producto: "+bcolors.ENDC))
+        if precio == "q" or precio == "Q":
+            os.system("cls") if os.name == "nt" else os.system("clear")
+            menu_admin()
+
+        if precio == "" or None: # Validar que el precio no esté vacío
+            print(bcolors.FAIL+"El precio no puede estar vacío.")
+            time.sleep(1)
+            os.system("cls") if os.name == "nt" else os.system("clear")
+            agregar_producto()
+
+        #Se ingresa el stock del producto y se valida que no esté vacío
+        stock = int(input(bcolors.WARNING+"Ingrese la cantidad de stock del producto:  "+bcolors.ENDC))
         if stock == "q" or stock == "Q":
             os.system("cls") if os.name == "nt" else os.system("clear")
             menu_admin()
 
-        elif stock == "" or stock < 0:
+        if stock == "" or stock < 0:
             print(bcolors.FAIL+"El stock no puede estar vacío, ni ser negativo")
-            time.sleep(1.5)
+            time.sleep(1)
             os.system("cls") if os.name == "nt" else os.system("clear")
             agregar_producto()
 
-        productos[id]["stock"] += stock
-        print(bcolors.OKGREEN+"Stock agregado exitosamente.")
+        #agregar producto al diccionario
+        id = str(len(productos) + 1) #ID del producto
+        productos[id] = {"id": id, "marca": marca, "nombre": nombre, "precio": precio, "stock": stock, "tipo": tipo}
+        print(bcolors.OKGREEN+"Producto agregado exitosamente.")
+
+        #Mostrar producto recién agregado
+        print("\nProducto agregado:")
+        print(productos[id]) #Mostrar producto recién agregado
+        time.sleep(2.5) 
+        os.system("cls") if os.name == "nt" else os.system("clear")
+        menu_admin()
+    except ValueError:
+        print(bcolors.FAIL+"Por favor, ingrese un valor válido.")
         time.sleep(1.5)
         os.system("cls") if os.name == "nt" else os.system("clear")
-        menu_admin()
-
-    #Validar que el ID no sea mayor a 4 digitos
-    elif len(str(id)) > 4:
-        print(bcolors.FAIL+"El ID no puede ser mayor a 4 digitos.")
-        time.sleep(1)
+        agregar_producto()
+    except KeyboardInterrupt:
+        print(bcolors.FAIL+"Por favor, ingrese un valor válido.")
+        time.sleep(1.5)
         os.system("cls") if os.name == "nt" else os.system("clear")
         agregar_producto()
-
-    #tipo de producto
-    tipo = input(bcolors.WARNING+"Ingrese el tipo de producto: "+bcolors.ENDC).upper()
-    if tipo == "q" or tipo == "Q":
-        os.system("cls") if os.name == "nt" else os.system("clear")
-        menu_admin()
-
-    #Validar que el tipo no esté vacío
-    elif tipo == "":
-        print(bcolors.FAIL+"El tipo no puede estar vacío.")
-        time.sleep(1)
-        os.system("cls") if os.name == "nt" else os.system("clear")
-        agregar_producto()
-
-    #Se ingresa la Marca y el Nombre del producto
-    marca = input(bcolors.WARNING+"Ingrese la marca del producto: "+bcolors.ENDC).upper()                                                                    #Agregar un guión al final de la marca
-    if marca == "q" or marca == "Q":
-        os.system("cls") if os.name == "nt" else os.system("clear")
-        menu_admin()
-
-    #Validar que la marca no esté vacía
-    elif marca == "":
-        print(bcolors.FAIL+"La marca no puede estar vacía.")
-        time.sleep(1)
-        os.system("cls") if os.name == "nt" else os.system("clear")
-        agregar_producto()
-    
-    #Se ingresa el nombre del producto y se le agrega la marca
-    nombre = input(bcolors.WARNING+"Ingrese el nombre del producto: "+bcolors.ENDC).upper()
-    if nombre == "q" or nombre == "Q":
-        os.system("cls") if os.name == "nt" else os.system("clear")
-        menu_admin()
-
-    if nombre == "": # Validar que el nombre no esté vacío
-        print(bcolors.FAIL+"El nombre no puede estar vacío.")
-        time.sleep(1)
-        os.system("cls") if os.name == "nt" else os.system("clear")
-        agregar_producto()
-        
-    elif nombre in productos: # Validar que el nombre no exista en el diccionario
-        print(bcolors.FAIL+"El producto ya existe.")
-        time.sleep(1)
-        os.system("cls") if os.name == "nt" else os.system("clear")
-        agregar_producto()
-    
-    #Se ingresa el precio del producto y se valida que no esté vacío
-    precio = float(input(bcolors.WARNING+"Ingrese el precio del producto: "+bcolors.ENDC))
-    if precio == "q" or precio == "Q":
-        os.system("cls") if os.name == "nt" else os.system("clear")
-        menu_admin()
-
-    if precio == "" or None: # Validar que el precio no esté vacío
-        print(bcolors.FAIL+"El precio no puede estar vacío.")
-        time.sleep(1)
-        os.system("cls") if os.name == "nt" else os.system("clear")
-        agregar_producto()
-        
-    #Se ingresa el stock del producto y se valida que no esté vacío
-    stock = int(input(bcolors.WARNING+"Ingrese la cantidad de stock del producto:  "+bcolors.ENDC))
-    if stock == "q" or stock == "Q":
-        os.system("cls") if os.name == "nt" else os.system("clear")
-        menu_admin()
-
-    if stock == "" or stock < 0:
-        print(bcolors.FAIL+"El stock no puede estar vacío, ni ser negativo")
-        time.sleep(1)
-        os.system("cls") if os.name == "nt" else os.system("clear")
-        agregar_producto()
-
-    #Agregar producto al diccionario
-    id = str(id) if id != "" else str(len(productos)+1)
-    productos[id] = {"id": id, "marca": marca, "nombre": nombre, "precio": precio, "stock": stock, "tipo": tipo}
-    print(bcolors.OKGREEN+"Producto agregado exitosamente.")
-
-    #Mostrar producto recién agregado
-    print("\nProducto agregado:")
-    print(f"ID: {len(productos)} | Nombre: {nombre} | Precio: ${precio} USD | Stock: {stock} | Tipo: {tipo}")
-    time.sleep(2.5) 
-    os.system("cls") if os.name == "nt" else os.system("clear")
-    menu_admin()
 
 
 def modificar_producto():
-    os.system("cls") if os.name == "nt" else os.system("clear")
-    print(bcolors.OKCYAN+bcolors.UNDERLINE+"Modificar producto\n\n"+bcolors.ENDC)
-    ver_productos()
-    #Crear una funcion para poder modificar el producto seleccionado por ID
-    print("Para regresar al menú principal, escriba 'Q'")
-    id = str(int(input(bcolors.WARNING+"Ingrese el ID del producto que desea modificar: "+bcolors.ENDC)))
-    if id.lower() == "q":
+    try:    
         os.system("cls") if os.name == "nt" else os.system("clear")
-        menu_admin()
-    if id == "" or None:
-        os.system("cls") if os.name == "nt" else os.system("clear")
+        print(bcolors.OKCYAN+bcolors.UNDERLINE+"Modificar producto\n\n"+bcolors.ENDC)
+        ver_productos()
+        print("Para regresar al menú principal, escriba 'Q'")
+        id = input(bcolors.WARNING+"Ingrese el ID del producto que desea modificar: "+bcolors.ENDC)
+
+        if id == "q" or id == "Q":
+            os.system("cls") if os.name == "nt" else os.system("clear")
+            menu_admin()
+        elif id == "" or None:
+            os.system("cls") if os.name == "nt" else os.system("clear")
+            print(bcolors.FAIL+"Por favor, ingrese un ID válido.")
+            time.sleep(1)
+            modificar_producto()
+            
+        elif id not in productos:
+            os.system("cls") if os.name == "nt" else os.system("clear")
+            print(bcolors.FAIL+"El producto no existe.")
+            time.sleep(1)
+            modificar_producto()
+
+    except ValueError:
         print(bcolors.FAIL+"Por favor, ingrese un ID válido.")
-        time.sleep(1)
+        time.sleep(1.5)
+        os.system("cls") if os.name == "nt" else os.system("clear")
         modificar_producto()
-    
+
     if id in productos:
         try:
             os.system("cls") if os.name == "nt" else os.system("clear")
             ver_productos()
             print(f"Producto seleccionado: {productos[id]['nombre']}")
             print("1.- Modificar nombre")
-            print("2.- Modificar precio")
-            print("3.- Modificar stock")
-            print("4.- Modificar tipo")
-            print("5.- Volver al menú principal")
-            opcion = int(input(bcolors.WARNING+"Ingrese una opción: "+bcolors.ENDC))
+            print("2.- Modificar marca")
+            print("3.- Modificar precio")
+            print("4.- Modificar stock")
+            print("5.- Modificar tipo")
+            print("6.- Volver al menú principal")
+            opcion = input(bcolors.WARNING+"Ingrese una opción: "+bcolors.ENDC)
 
-            if opcion == 1:
+            if opcion == "1":
                 os.system("cls") if os.name == "nt" else os.system("clear")
-                nuevo_nombre = input(bcolors.WARNING+"Ingrese el nuevo nombre del producto: "+bcolors.ENDC)
+                nuevo_nombre = input(bcolors.WARNING+"Ingrese el nuevo nombre del producto: "+bcolors.ENDC).upper()
                 productos[id]["nombre"] = nuevo_nombre
                 print(bcolors.OKGREEN+"Nombre modificado exitosamente.")
                 time.sleep(1.5)
                 os.system("cls") if os.name == "nt" else os.system("clear")
                 modificar_producto()
 
-            elif opcion == 2:
+            elif opcion == "2":
+                os.system("cls") if os.name == "nt" else os.system("clear")
+                nueva_marca = input(bcolors.WARNING+"Ingrese la nueva marca del producto: "+bcolors.ENDC).upper()
+                productos[id]["marca"] = nueva_marca
+                print(bcolors.OKGREEN+"Marca modificada exitosamente.")
+                time.sleep(1.5)
+                os.system("cls") if os.name == "nt" else os.system("clear")
+                modificar_producto()
+
+            elif opcion == "3":
                 os.system("cls") if os.name == "nt" else os.system("clear")
                 nuevo_precio = float(input(bcolors.WARNING+"Ingrese el nuevo precio del producto: "+bcolors.ENDC))
                 productos[id]["precio"] = nuevo_precio
@@ -424,7 +465,7 @@ def modificar_producto():
                 os.system("cls") if os.name == "nt" else os.system("clear")
                 modificar_producto()
 
-            elif opcion == 3:
+            elif opcion == "4":
                 os.system("cls") if os.name == "nt" else os.system("clear")
                 nuevo_stock = int(input(bcolors.WARNING+"Ingrese la nueva cantidad de stock del producto: "+bcolors.ENDC))
                 productos[id]["stock"] = nuevo_stock
@@ -433,19 +474,25 @@ def modificar_producto():
                 os.system("cls") if os.name == "nt" else os.system("clear")
                 modificar_producto()
 
-            elif opcion == 4:
+            elif opcion == "5":
                 os.system("cls") if os.name == "nt" else os.system("clear")
-                nuevo_tipo = input(bcolors.WARNING+"Ingrese el nuevo tipo de producto: "+bcolors.ENDC)
+                nuevo_tipo = input(bcolors.WARNING+"Ingrese el nuevo tipo de producto: "+bcolors.ENDC).upper()
                 productos[id]["tipo"] = nuevo_tipo
                 print(bcolors.OKGREEN+"Tipo modificado exitosamente.")
                 time.sleep(1.5)
                 os.system("cls") if os.name == "nt" else os.system("clear")
                 modificar_producto()
+
+            elif opcion == "6":
+                os.system("cls") if os.name == "nt" else os.system("clear")
+                menu_admin()
+
         except ValueError:
             print(bcolors.FAIL+"Por favor, ingrese un valor válido.")
             time.sleep(1.5)
             os.system("cls") if os.name == "nt" else os.system("clear")
             modificar_producto()
+
         except KeyboardInterrupt:
             print(bcolors.FAIL+"Por favor, ingrese un valor válido.")
             time.sleep(1.5)
@@ -453,32 +500,35 @@ def modificar_producto():
             modificar_producto()
             
 
-
 def eliminar_producto():
     ver_productos()
-    print(bcolors.OKCYAN+bcolors.UNDERLINE+"Eliminar producto\n"+bcolors.ENDC)
+    print(bcolors.OKCYAN + bcolors.UNDERLINE + "Eliminar producto\n" + bcolors.ENDC)
     print("Para regresar al menú principal, escriba 'Q'")
-    id = input(bcolors.WARNING+"Ingrese el ID del producto que desea eliminar: "+bcolors.ENDC)
-    if id.lower() == "q":
-        os.system("cls") if os.name == "nt" else os.system("clear")
-        menu_admin()
+    
+    while True:
+        id = input(bcolors.WARNING + "Ingrese el ID del producto que desea eliminar: " + bcolors.ENDC)
+        
+        if id.lower() == "q":
+            os.system("cls" if os.name == "nt" else "clear")
+            menu_admin()
+            break
 
-    elif id == "" or None:
-        os.system("cls") if os.name == "nt" else os.system("clear")
-        print(bcolors.FAIL+"Por favor, ingrese un ID válido.")
-        eliminar_producto()
+        if id == "" or id is None:
+            os.system("cls" if os.name == "nt" else "clear")
+            print(bcolors.FAIL + "Por favor, ingrese un ID válido.")
+            continue
 
-    if id in productos:
-        del productos[id] #Eliminar producto
-        print(bcolors.OKGREEN+"Producto eliminado exitosamente.")
-        time.sleep(1.5)
-        os.system("cls") if os.name == "nt" else os.system("clear")
-        menu_admin()
-    else:
-        print(bcolors.FAIL+"El producto no existe.")
-        time.sleep(1.5)
-        os.system("cls") if os.name == "nt" else os.system("clear")
-        eliminar_producto()
+        if id in productos:
+            del productos[id]  # Eliminar producto
+            print(bcolors.OKGREEN + "Producto eliminado exitosamente.")
+            time.sleep(1.5)
+            os.system("cls" if os.name == "nt" else "clear")
+            menu_admin()
+            break
+        else:
+            print(bcolors.FAIL + "El producto no existe.")
+            time.sleep(1.5)
+            os.system("cls" if os.name == "nt" else "clear")
         
 
 #####################################
@@ -494,29 +544,26 @@ def menu_user():
         print("2.- Comprar producto")
         print("3.- Ver historial de compras")
         print("4.- Gestionar cuenta")
-        print("5.- Salir de la cuenta")
-        opcion = int(input(bcolors.WARNING+"Ingrese una opción: "+bcolors.ENDC))
+        print("5.- Salir de la cuenta\n")
+        opcion = input(bcolors.WARNING+"Ingrese una opción: "+bcolors.ENDC)
 
-        if opcion == 1: #Llama la función para ver los productos disponibles, de forma limpia
+        if opcion == "1": #Llama la función para ver los productos disponibles, de forma limpia
             os.system("cls") if os.name == "nt" else os.system("clear")
             ver_productos()
             menu_user()
 
-        elif opcion == 2: #Llama la función para comprar un producto 
+        elif opcion == "2": #Llama la función para comprar un producto 
             os.system("cls") if os.name == "nt" else os.system("clear")
             comprar_producto()
             menu_user()
-
-        elif opcion == 3: #Llama la función para ver el historial de compras del usuario en sesión
+        elif opcion == "3": #Llama la función para ver el historial de compras del usuario en sesión
             os.system("cls") if os.name == "nt" else os.system("clear")
             ver_historial_compras()
             menu_user()
-
-        elif opcion == 4: #Llama la función para gestionar la cuenta del usuario en sesión
+        elif opcion == "4": #Llama la función para gestionar la cuenta del usuario en sesión
             os.system("cls") if os.name == "nt" else os.system("clear")
             gestionar_cuenta()
-
-        elif opcion == 5: #Salir de la cuenta y volver al menú principal
+        elif opcion == "5": #Salir de la cuenta y volver al menú principal
             os.system("cls") if os.name == "nt" else os.system("clear")
             main_menu()
 
@@ -525,11 +572,13 @@ def menu_user():
             time.sleep(1)
             os.system("cls") if os.name == "nt" else os.system("clear")
             menu_user()
+
     except ValueError: #si el usuario ingresa un valor no valido, se ejecutara el siguiente mensaje y se reiniciara el menu
         print(bcolors.FAIL+"\nERROR:"+bcolors.ENDC+"porfavor, ingrese una de las opciones en pantalla.")
         time.sleep(1)
         os.system("cls") if os.name == "nt" else os.system("clear")
         menu_user()
+
     except KeyboardInterrupt: #Evitamos que se produzca un crasheo si el usuario presiona Ctrl+C
         print(bcolors.FAIL+"\nERROR:"+bcolors.ENDC+"porfavor, ingrese una de las opciones en pantalla.")
         time.sleep(1)
@@ -625,12 +674,13 @@ def gestionar_cuenta():
         print("1.- Cambiar contraseña")
         print("2.- Borrar cuenta")
         print("3.- Volver al menú principal")
-        opcion = int(input(bcolors.WARNING+"Ingrese una opción: "+bcolors.ENDC))
-        if opcion == 1:
+        opcion = input(bcolors.WARNING+"Ingrese una opción: "+bcolors.ENDC)
+
+        if opcion == "1":
             os.system("cls") if os.name == "nt" else os.system("clear")
             cambiar_contraseña()
 
-        elif opcion == 2: #borrar cuenta del usuario en sesion iniciada
+        elif opcion == "2": #borrar cuenta del usuario en sesion iniciada
             if usuario_sesion in usuarios:
                 del usuarios[usuario_sesion]
                 print(bcolors.OKGREEN+"Cuenta eliminada exitosamente.")
@@ -638,7 +688,7 @@ def gestionar_cuenta():
                 os.system("cls") if os.name == "nt" else os.system("clear")
                 main_menu()
 
-        elif opcion == 3:
+        elif opcion == "3":
             os.system("cls") if os.name == "nt" else os.system("clear")
             menu_user()
         else:
@@ -720,6 +770,7 @@ def cambiar_contraseña():
 ######################################
 #   #   #   Menu principal   #   #   #
 ######################################
+
 def main_menu():
     os.system("cls") if os.name == "nt" else os.system("clear")
     try: #aplicamos el try para evitar errores en el programa
@@ -727,18 +778,18 @@ def main_menu():
         print(bcolors.OKGREEN+"*Para poder acceder a nuestro catálogo de productos, porfavor "+bcolors.WARNING+bcolors.UNDERLINE+"registate"+bcolors.ENDC+" o "+bcolors.WARNING+bcolors.UNDERLINE+"inicia sesión.\n"+bcolors.ENDC)
         print("1.-Registrate")
         print("2.-Iniciar Sesión")
-        print("3.-Salir del programa")
-        opcion = int(input(bcolors.WARNING+"Ingrese una opción: "+bcolors.ENDC))
+        print("3.-Salir del programa\n")
+        opcion = input(bcolors.WARNING+"Ingrese una opción: "+bcolors.ENDC)
 
-        if opcion == 1:
+        if opcion == "1":
             os.system("cls") if os.name == "nt" else os.system("clear")
             register()
 
-        elif opcion == 2:
+        elif opcion == "2":
             os.system("cls") if os.name == "nt" else os.system("clear")
             login()
 
-        elif opcion == 3:
+        elif opcion == "3":
             os.system("cls") if os.name == "nt" else os.system("clear")
             sys.exit(bcolors.OKBLUE+"""
                      
