@@ -23,14 +23,14 @@ usuarios = {
 
 #Diccionario de productos, con id, marca, nombre, precio, stock y tipo de producto
 productos = {
-    "1" : {"id":"1",  "marca": "AZULS",      "nombre" : "VG24",         "precio" : 125.00,    "stock" : 10,   "tipo": "MONITOR"},
-    "2" : {"id":"2",  "marca": "JAYPEREX",   "nombre" : "FPS",          "precio" : 60.00,     "stock" : 93,   "tipo": "TECLADO"},
-    "3" : {"id":"3",  "marca": "JAYPEREX",   "nombre" : "SURGE",        "precio" : 30.00,     "stock" : 67,   "tipo": "MOUSE"},
-    "4" : {"id":"4",  "marca": "INTREL",     "nombre" : "CORE Y9-20",   "precio" : 150.00,    "stock" : 25,   "tipo": "CPU"},
-    "5" : {"id":"5",  "marca": "NTIVIA",     "nombre" : "RTK - 4100",   "precio" : 300.00,    "stock" : 15,   "tipo": "GPU"},
-    "6" : {"id":"6",  "marca": "CRUZIAL",    "nombre" : "VALISTIC",     "precio" : 20.00,     "stock" : 85,   "tipo": "RAM"},
-    "7" : {"id":"7",  "marca": "MSY",        "nombre" : "M315",         "precio" : 45.00,     "stock" : 0,    "tipo": "GABINETE"},
-    "8" : {"id":"8",  "marca": "YIGABAIT",   "nombre" : "H312-V",       "precio" : 43.00,     "stock" : 33,   "tipo": "PLACA"},
+    "1" : {"id":"1",  "marca": "AZULS",     "nombre" : "VG24' 144HZ",        "precio" : 125.00,    "stock" : 10,   "tipo": "MONITOR"},
+    "2" : {"id":"2",  "marca": "HYPERZ",    "nombre" : "ALLOY FPS",    "precio" : 60.00,     "stock" : 93,   "tipo": "TECLADO"},
+    "3" : {"id":"3",  "marca": "HYPERZ",    "nombre" : "SURGE RGB 360",        "precio" : 30.00,     "stock" : 67,   "tipo": "MOUSE"},
+    "4" : {"id":"4",  "marca": "INTREL",    "nombre" : "CORE Y9-8TH",   "precio" : 150.00,    "stock" : 25,   "tipo": "CPU"},
+    "5" : {"id":"5",  "marca": "NEVIDIA",   "nombre" : "RTK - 4100",   "precio" : 300.00,    "stock" : 15,   "tipo": "GPU"},
+    "6" : {"id":"6",  "marca": "KINSON",    "nombre" : "JAJSDF4939FX", "precio" : 20.00,     "stock" : 85,   "tipo": "RAM"},
+    "7" : {"id":"7",  "marca": "KRUSIAL",   "nombre" : "BALLISTICKS",         "precio" : 45.00,     "stock" : 0,    "tipo": "GABINETE"},
+    "8" : {"id":"8",  "marca": "GIGABITS",  "nombre" : "H312-V",       "precio" : 43.00,     "stock" : 33,   "tipo": "PLACA"},
 }
 
 #Usuario en sesión, para saber quien está logueado y poder mostrar su historial de compras.
@@ -76,8 +76,8 @@ def register():
             time.sleep(1)
             os.system("cls") if os.name == "nt" else os.system("clear")
             register()
-
-        password = getpass.getpass(input(bcolors.WARNING+"Ingrese su contraseña: "+bcolors.ENDC))
+        #A la password se le agrega el getpass para que no se vea la contraseña al escribirla
+        password = getpass.getpass(bcolors.WARNING+"Ingrese su contraseña: "+bcolors.ENDC)
         if password == "q" or password == "Q":
             os.system("cls") if os.name == "nt" else os.system("clear")
             main_menu()
@@ -127,8 +127,9 @@ def login():
         if user == "q" or user == "Q":
             os.system("cls") if os.name == "nt" else os.system("clear")
             main_menu()
-
-        password = getpass.getpass(input(bcolors.WARNING+"Ingrese su contraseña: "+bcolors.ENDC))
+             
+        #A la password se le agrega el getpass para que no se vea la contraseña al escribirla
+        password = getpass.getpass(bcolors.WARNING+"Ingrese su contraseña: "+bcolors.ENDC)
 
         if password == "q" or password == "Q":
             os.system("cls") if os.name == "nt" else os.system("clear")
@@ -168,6 +169,7 @@ def login():
 def ver_productos():
     os.system("cls") if os.name == "nt" else os.system("clear")
     print(bcolors.OKCYAN+bcolors.UNDERLINE+"Productos disponibles\n"+bcolors.ENDC)
+    #Se hace print de los productos disponibles, con formato tabla, aplicando algunos colores.
     print(bcolors.OKGREEN+"    ID\t"+bcolors.ENDC+"|"+bcolors.OKGREEN+"      Tipo\t  "+bcolors.ENDC+"|"+bcolors.OKGREEN+"    Marca     /    Nombre\t    "+bcolors.ENDC+"|"+bcolors.OKGREEN+"      Precio\t "+bcolors.ENDC+"|"+bcolors.OKGREEN+"   Stock"+bcolors.ENDC)
     print("-"*95)
     for v in productos.values():                                    #Recorre el diccionario de productos y muestra el valor
@@ -178,14 +180,15 @@ def ver_productos():
 
 #En este historial se muestra el historial de compras del usuario en sesion
 def ver_historial_compras():
-    global usuario_sesion
+    global usuario_sesion   #Se declara la variable global para poder usarla en la función
     print(bcolors.OKCYAN+bcolors.UNDERLINE+"Historial de compras\n"+bcolors.ENDC)
+    #Se imprime el historial de compras del usuario en sesión, con formato tabla, aplicando algunos colores.
     print(bcolors.OKGREEN+"     Producto\t\t   "+bcolors.ENDC+"|"+bcolors.OKGREEN+"    Precio     "+bcolors.ENDC+"|"+bcolors.OKGREEN+" Cantidad  "+bcolors.ENDC+"|"+bcolors.OKGREEN+"     Total      "+bcolors.ENDC+"|"+bcolors.OKGREEN+"   Fecha   /   Hora"+bcolors.ENDC)
     print("-"*95)
-    if usuario_sesion in hist_compras:
-        for v in hist_compras[usuario_sesion]:
+    if usuario_sesion in hist_compras: #Si el usuario en sesión tiene compras, se mostrarán en pantalla
+        for v in hist_compras[usuario_sesion]: #Recorre el historial de compras del usuario en sesión y muestra el valor
             print(f"  {v['producto']:<25}| "+bcolors.OKGREEN+"$"+bcolors.ENDC+f"{v['precio']:<6}  USD  |    {v['cantidad']:<6} |  "+bcolors.OKGREEN+"$"+bcolors.ENDC+f"{v['total']:<6}  USD  |  {v['fecha']}")
-    else:
+    else:   #Si el usuario en sesión no tiene compras, se mostrará un mensaje en pantalla
         print(bcolors.HEADER+"Haz una compra y podrás ver el registro de tus compras aquí."+bcolors.ENDC)
     print("-"*95 + "\n")
     os.system("pause")
@@ -194,11 +197,12 @@ def ver_historial_compras():
 #En este historial se puede ver a detealle todas las ventas realizadas en el sistema y su respectivo comprador
 def ver_historial_ventas():
     print(bcolors.OKCYAN+bcolors.UNDERLINE+"Historial de ventas\n"+bcolors.ENDC)
+    #Se imprime el historial de ventas, con formato tabla, aplicando algunos colores.
     print(bcolors.OKGREEN+"    Usuario   "+bcolors.ENDC+"|"+bcolors.OKGREEN+"        Producto\t\t  "+bcolors.ENDC+"|"+bcolors.OKGREEN+"    Precio    "+bcolors.ENDC+"|"+bcolors.OKGREEN+" Cantidad  "+bcolors.ENDC+"|"+bcolors.OKGREEN+"\t  Total     "+bcolors.ENDC+"|"+bcolors.OKGREEN+"\tFecha  /   Hora"+bcolors.ENDC)
     print("-"*115)
-    if len(hist_ventas) == 0:
+    if len(hist_ventas) == 0:   #Si no hay ventas registradas, se mostrará un mensaje en pantalla
         print(bcolors.HEADER+"No hay ventas registradas."+bcolors.ENDC)
-    for v in hist_ventas.values():
+    for v in hist_ventas.values():  #Recorre el historial de ventas y muestra los valores del diccionario 
         print(bcolors.HEADER+f"    {v['usuario']:<10}"+bcolors.ENDC+f"|  {v['producto']:<25}| "+bcolors.OKGREEN+"$"+bcolors.ENDC+f"{v['precio']:<6} USD  |    {v['cantidad']:<6} |  "+bcolors.OKGREEN+"$"+bcolors.ENDC+f"{v['total']:<6} USD |  {v['fecha']}")
     print("-"*115 + "\n")
     os.system("pause")
@@ -234,7 +238,7 @@ def menu_admin():
         elif opcion == "3":
             os.system("cls") if os.name == "nt" else os.system("clear")
             ver_productos()
-            modificar_producto()
+            modificar_productos()
         
         elif opcion == "4":
             os.system("cls") if os.name == "nt" else os.system("clear")
@@ -447,89 +451,90 @@ def modificar_atributos_producto(id):
         print("3.- Modificar precio")
         print("4.- Modificar stock")
         print("5.- Modificar tipo")
-        print("6.- Volver ")
+        print("6.- Volver")
         opcion = input(bcolors.WARNING+"Ingrese una opción: "+bcolors.ENDC)
 
         if opcion == "1":
             nuevo_nombre = input(bcolors.WARNING+"Ingrese el nuevo nombre del producto: "+bcolors.ENDC).upper()
-            productos[id]["nombre"] = nuevo_nombre
+            productos[id]["nombre"] = nuevo_nombre  #Modificar el nombre del producto
             print(bcolors.OKGREEN+"Nombre modificado exitosamente.")
             time.sleep(1.5)
             modificar_atributos_producto(id)
 
         elif opcion == "2":
             nueva_marca = input(bcolors.WARNING+"Ingrese la nueva marca del producto: "+bcolors.ENDC).upper()
-            productos[id]["marca"] = nueva_marca
+            productos[id]["marca"] = nueva_marca    #Se reemplaza la marca del producto, por la nueva marca ingresada
             print(bcolors.OKGREEN+"Marca modificada exitosamente.")
             time.sleep(1.5)
             modificar_atributos_producto(id)
 
         elif opcion == "3":
             nuevo_precio = float(input(bcolors.WARNING+"Ingrese el nuevo precio del producto: "+bcolors.ENDC))
-            productos[id]["precio"] = nuevo_precio
+            productos[id]["precio"] = nuevo_precio  #Se reemplaza el precio del producto, por el nuevo precio ingresado
             print(bcolors.OKGREEN+"Precio modificado exitosamente.")
             time.sleep(1.5)
             modificar_atributos_producto(id)
 
         elif opcion == "4":
             nuevo_stock = int(input(bcolors.WARNING+"Ingrese la nueva cantidad de stock del producto: "+bcolors.ENDC))
-            productos[id]["stock"] = nuevo_stock
+            productos[id]["stock"] = nuevo_stock    #Se reemplaza el stock del producto, por el nuevo stock ingresado
             print(bcolors.OKGREEN+"Stock modificado exitosamente.")
             time.sleep(1.5)
             modificar_atributos_producto(id)
 
         elif opcion == "5":
             nuevo_tipo = input(bcolors.WARNING+"Ingrese el nuevo tipo de producto: "+bcolors.ENDC).upper()
-            productos[id]["tipo"] = nuevo_tipo
+            productos[id]["tipo"] = nuevo_tipo  #Se reemplaza el tipo del producto, por el nuevo tipo ingresado
             print(bcolors.OKGREEN+"Tipo modificado exitosamente.")
             time.sleep(1.5)
             modificar_atributos_producto(id)
 
         elif opcion == "6":
             os.system("cls") if os.name == "nt" else os.system("clear")
-            modificar_productos
+            modificar_productos()
 
         else:
             print(bcolors.FAIL+"Por favor, ingrese una opción válida.")
             time.sleep(1.5)
             modificar_atributos_producto(id)
 
-    except ValueError:
+    except ValueError:  #Si el usuario ingresa un valor no valido, se ejecutara el siguiente mensaje
         print(bcolors.FAIL+"Por favor, ingrese un valor válido.")
         time.sleep(1.5)
         modificar_atributos_producto(id)
-    except KeyboardInterrupt:
+    except KeyboardInterrupt:   #Si el usuario presiona Ctrl+C, se ejecutara el siguiente mensaje
         print(bcolors.FAIL+"Por favor, ingrese un valor válido.")
         time.sleep(1.5)
         modificar_atributos_producto(id)
     
 
 def eliminar_producto():
-    ver_productos()
+    ver_productos() #Mostrar productos disponibles
     print(bcolors.OKCYAN + bcolors.UNDERLINE + "Eliminar producto\n" + bcolors.ENDC)
     print("Para regresar al menú principal, escriba 'Q'")
     
-    while True:
+    while True: #Ciclo infinito para que el usuario pueda ingresar un ID válido
         id = input(bcolors.WARNING + "Ingrese el ID del producto que desea eliminar: " + bcolors.ENDC)
         
-        if id.lower() == "q":
+        if id.lower() == "q":   #Si el usuario ingresa "q" o "Q", se regresará al menú principal
             os.system("cls" if os.name == "nt" else "clear")
             menu_admin()
-            break
+            break   #Romper el ciclo infinito si el usuario ingresa "q" o "Q"
 
-        if id == "" or id is None:
+        if id == "" or id is None:  #Validar que el ID no esté vacío
             os.system("cls" if os.name == "nt" else "clear")
             print(bcolors.FAIL + "Por favor, ingrese un ID válido.")
-            continue
+            continue    #Continuar con el ciclo infinito si el ID está vacío
 
-        if id in productos:
+        if id in productos: #Validar que el ID ingresado exista en el diccionario
             del productos[id]  # Eliminar producto
             print(bcolors.OKGREEN + "Producto eliminado exitosamente.")
             time.sleep(1.5)
             os.system("cls" if os.name == "nt" else "clear")
             menu_admin()
-            break
-        else:
+            break   #Romper el ciclo infinito si el producto se eliminó exitosamente
+
+        else:   #Si el ID ingresado no existe en el diccionario, se mostrará un mensaje en pantalla
             print(bcolors.FAIL + "El producto no existe.")
             time.sleep(1.5)
             os.system("cls" if os.name == "nt" else "clear")
