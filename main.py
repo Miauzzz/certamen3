@@ -28,7 +28,7 @@ productos = {
     "3" : {"id":"3",  "marca": "HYPERZ",    "nombre" : "SURGE RGB 360",   "precio" : 30.00,     "stock" : 67,   "tipo": "MOUSE"},
     "4" : {"id":"4",  "marca": "INTREL",    "nombre" : "CORE Y9-8TH",     "precio" : 150.00,    "stock" : 25,   "tipo": "CPU"},
     "5" : {"id":"5",  "marca": "NEVIDIA",   "nombre" : "RTK - 4100",      "precio" : 300.00,    "stock" : 15,   "tipo": "GPU"},
-    "6" : {"id":"6",  "marca": "KINSON",    "nombre" : "JAJSDF4939FX",    "precio" : 20.00,     "stock" : 85,   "tipo": "RAM"},
+    "6" : {"id":"6",  "marca": "KINSON",    "nombre" : "Furia"       ,    "precio" : 20.00,     "stock" : 85,   "tipo": "RAM"},
     "7" : {"id":"7",  "marca": "KRUSIAL",   "nombre" : "BALLISTICKS",     "precio" : 45.00,     "stock" : 0,    "tipo": "GABINETE"},
     "8" : {"id":"8",  "marca": "GIGABITS",  "nombre" : "H312-V",          "precio" : 43.00,     "stock" : 33,   "tipo": "PLACA"},
 }
