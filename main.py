@@ -726,7 +726,7 @@ def cambiar_contraseña():
     global user     #Definimos la variable global "user" para poder acceder a ella en la función
     print(bcolors.OKCYAN+bcolors.UNDERLINE+"Cambiar ontraseña\n"+bcolors.ENDC)
     print("Para volver, escriba 'Q'")
-    oldpass = input(bcolors.WARNING+"Ingrese su contraseña actual: "+bcolors.ENDC)  #Solicitar la contraseña actual del usuario en sesión
+    oldpass = getpass.getpass(bcolors.WARNING+"Ingrese su contraseña actual: "+bcolors.ENDC)  #Solicitar la contraseña actual del usuario en sesión
     if oldpass == "q" or oldpass == "Q":        #Si el usuario ingresa "q" o "Q", se regresará al menú de gestión de cuenta
         os.system("cls") if os.name == "nt" else os.system("clear")
         gestionar_cuenta()
@@ -744,7 +744,7 @@ def cambiar_contraseña():
         cambiar_contraseña()
     
     if oldpass == usuarios[user]["contraseña"]:     #Validar que la contraseña ingresada sea igual a la contraseña actual del usuario en sesión
-        newpass = input(bcolors.WARNING+"Ingrese su nueva contraseña: "+bcolors.ENDC)
+        newpass = getpass.getpass(bcolors.WARNING+"Ingrese su nueva contraseña: "+bcolors.ENDC)
 
 
     if newpass == "q" or newpass == "Q":        #Si el usuario ingresa "q" o "Q", se regresará al menú de gestión de cuenta
