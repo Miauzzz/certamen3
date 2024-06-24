@@ -349,16 +349,14 @@ def agregar_producto():
             os.system("cls") if os.name == "nt" else os.system("clear")
             agregar_producto()
 
-        #Agregar producto al diccionario
-        id = str(len(productos) + 1) #Esta contará la cantidad de productos en el diccionario y le sumará 1, para obtener el ID del nuevo producto
-        productos[id] = {
-            "id": id, 
+        #Agregar producto al diccionario, se suma +1 al id y permite agregar mucho productos
+        productos[str(len(productos) + 1)] = {
+            "id": str(len(productos) + 1), 
             "marca": marca, 
             "nombre": nombre, 
             "precio": precio, 
             "stock": stock, 
             "tipo": tipo}
-        print(bcolors.OKGREEN+"Producto agregado exitosamente.")
 
         #Mostrar producto recién agregado
         print("\nProducto agregado:")
@@ -368,13 +366,18 @@ def agregar_producto():
         menu_admin()
 
     except ValueError:          #si el usuario ingresa un valor no valido, se ejecutara el siguiente mensaje
-        print(bcolors.FAIL+"Porfavor, ingrese un valor válido.")
+        print(bcolors.FAIL+"\nPorfavor, ingrese un valor válido.")
         time.sleep(1.5)
         os.system("cls") if os.name == "nt" else os.system("clear")
         agregar_producto()
+
     except KeyboardInterrupt:   #si el usuario ingresa un valor no valido, se ejecutara el siguiente mensaje
-        print(bcolors.FAIL+"Porfavor, ingrese un valor válido.")
+        print(bcolors.FAIL+"\nPorfavor, ingrese un valor válido.")
         time.sleep(1.5)
+        os.system("cls") if os.name == "nt" else os.system("clear")
+        agregar_producto()
+        
+    except KeyError:
         os.system("cls") if os.name == "nt" else os.system("clear")
         agregar_producto()
 
